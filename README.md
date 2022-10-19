@@ -8,15 +8,6 @@ Ton verified contract code viewer for func with code highlighting
 - Displays code navigator with code highlighting
 - Customizable data fetching (IPFS GW, Ton API endpoint)
 
-## 👀 Demo
-1. Clone this repo
-2. Run `npm install`
-3. Run `npm run build`
-4. Navigate to `example/vanilla`
-5. Run `npm install`
-6. Run `npm link ../../`
-7. Run `npm run dev`
-
 ## 📦 Getting Started
 
 ### Step 1: Prepare DOM ###
@@ -101,6 +92,15 @@ ContractVerifierUI.loadSourcesData(sourcesData: SourcesData, opts: {
 // To be used usually only if the file list is manually built
 ContractVerifierUI.setCode(contentSelector: string, content: string);
 ```
+
+## 👀 Demo
+1. Clone this repo
+2. Run `npm install`
+3. Run `npm run build`
+4. Navigate to `example/vanilla`
+5. Run `npm install`
+6. Run `npm link ../../`
+7. Run `npm run dev`
 
 ## 💎 Customization
 
