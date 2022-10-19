@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "target": "es6",
+    "outDir": "build",
+    "declaration": true,
+    "declarationDir": "build",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "emitDeclarationOnly": true,
+    "allowSyntheticDefaultImports": true,
+  },
+  "exclude": ["src/demo", "build", "example"]
+}

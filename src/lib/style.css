@@ -1,0 +1,59 @@
+.contract-verifier-container {
+    display: flex;
+    height: 100%;
+}
+
+.contract-verifier-container.column {
+    flex-direction: column;
+}
+
+.contract-verifier-code {
+    text-align: left;
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+}
+
+.contract-verifier-code pre {
+    margin: 0
+}
+
+.contract-verifier-container.column .contract-verifier-files {
+    flex-direction: row;
+}
+
+.contract-verifier-files {
+    text-align: left;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.contract-verifier-files.dark {
+    background: #28292d;
+}
+
+.contract-verifier-files.light {
+    background: #fff;
+}
+
+.contract-verifier-file {
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.contract-verifier-files.dark .contract-verifier-file:hover {
+    filter: brightness(0.8);
+}
+
+.contract-verifier-files.light .contract-verifier-file:hover {
+    background-color: #f6f6f6;
+}
+
+.contract-verifier-files.dark .contract-verifier-file.active {
+    background: #232222;
+}
+
+.contract-verifier-files.light .contract-verifier-file.active {
+    background: #f2f2f2;
+}
