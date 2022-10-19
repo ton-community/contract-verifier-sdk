@@ -28,7 +28,7 @@ Add this to your HTML structure
 
 #### Browser
 ```html
-<script src="https://cdn.jsdelivr.net/gh/todo"></script>
+<script src="https://cdn.jsdelivr.net/gh/shaharyakir/contract-verifier-sdk/build/index.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", async function () {
         const codeCellHash = "/rX/aCDi/w2Ug+fg1iyBfYRniftK5YDIeIZtlZ2r1cA=";
