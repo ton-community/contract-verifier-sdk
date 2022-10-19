@@ -99,7 +99,7 @@ ContractVerifierUI.loadSourcesData(sourcesData: SourcesData, opts: {
 });
 
 // To be used usually only if the file list is manually built
-ContractVerifier.UI.setCode(contentSelector: string, content: string);
+ContractVerifierUI.setCode(contentSelector: string, content: string);
 ```
 
 ## 💎 Customization
