@@ -1,13 +1,5 @@
 # Ton Contract Verifier 
 
-## Table of Contents
-
-- Table of Contents
-- TL;DR
-- Getting Started
-- License
-
-
 ## TL;DR
 Ton verified contract code viewer for func with code highlighting 
 
