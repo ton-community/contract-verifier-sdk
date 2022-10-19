@@ -1,6 +1,6 @@
 import "./style.css";
 
-import "@orbs-network/tsv-widget";
+import "@ton-community/contract-verifier-sdk";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>

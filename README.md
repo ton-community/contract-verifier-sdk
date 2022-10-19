@@ -19,10 +19,10 @@ Ton verified contract code viewer for func with code highlighting
 ## 👀 Demo
 1. Clone this repo
 2. Run `npm install`
-3. Run `npm build`
+3. Run `npm run build`
 4. Navigate to `example/vanilla`
-5. Run `npm link ../../`
-6. Run `npm install`
+5. Run `npm install`
+6. Run `npm link ../../`
 7. Run `npm run dev`
 
 ## 📦 Getting Started
