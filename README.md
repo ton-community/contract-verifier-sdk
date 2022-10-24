@@ -87,7 +87,11 @@ async ContractVerifier.getSourcesJsonUrl(codeCellHash: string, options?: GetSour
 
 
 interface SourcesData {
-  files: { name: string, content: string }[];
+  files: { name: string; content: string }[];
+  compileCommandLine: string;
+  compiler: string;
+  version: string;
+  verificationDate: Date;
 }
 type IpfsUrlConverterFunc (ipfsUrl: string) => string;
 
