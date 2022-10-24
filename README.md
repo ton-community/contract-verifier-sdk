@@ -1,13 +1,5 @@
 # Ton Contract Verifier 
 
-## Table of Contents
-
-- Table of Contents
-- TL;DR
-- Getting Started
-- License
-
-
 ## TL;DR
 Ton verified contract code viewer for func with code highlighting 
 
@@ -15,15 +7,6 @@ Ton verified contract code viewer for func with code highlighting
 - Fetches contract sources code from the ipfs via a sources.json url  
 - Displays code navigator with code highlighting
 - Customizable data fetching (IPFS GW, Ton API endpoint)
-
-## 👀 Demo
-1. Clone this repo
-2. Run `npm install`
-3. Run `npm run build`
-4. Navigate to `example/vanilla`
-5. Run `npm install`
-6. Run `npm link ../../`
-7. Run `npm run dev`
 
 ## 📦 Getting Started
 
@@ -45,7 +28,7 @@ Add this to your HTML structure
 
 #### Browser
 ```html
-<script src="https://cdn.jsdelivr.net/gh/todo"></script>
+<script src="https://cdn.jsdelivr.net/gh/shaharyakir/contract-verifier-sdk/build/index.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", async function () {
         const codeCellHash = "/rX/aCDi/w2Ug+fg1iyBfYRniftK5YDIeIZtlZ2r1cA=";
@@ -111,8 +94,17 @@ ContractVerifierUI.loadSourcesData(sourcesData: SourcesData, opts: {
 });
 
 // To be used usually only if the file list is manually built
-ContractVerifier.UI.setCode(contentSelector: string, content: string);
+ContractVerifierUI.setCode(contentSelector: string, content: string);
 ```
+
+## 👀 Demo
+1. Clone this repo
+2. Run `npm install`
+3. Run `npm run build`
+4. Navigate to `example/vanilla`
+5. Run `npm install`
+6. Run `npm link ../../`
+7. Run `npm run dev`
 
 ## 💎 Customization
 
