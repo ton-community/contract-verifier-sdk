@@ -43,8 +43,7 @@ Add this to your HTML structure
             const sourcesData = await ContractVerifier.getSourcesData(ipfslink, (ipfs) => ipfs.replace("ipfs://", "https://myproj.mygateway-ipfs.io/ipfs/"));
             const theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 
-            ContractVerifierUI.loadSourcesData({
-                sourcesData: sourcesData,
+            ContractVerifierUI.loadSourcesData(sourcesData, {
                 containerSelector: "#myVerifierContainer",
                 fileListSelector: "#myVerifierFiles",
                 contentSelector: "#myVerifierContent",
