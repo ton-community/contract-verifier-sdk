@@ -10,6 +10,10 @@ interface SourcesData {
         name: string;
         content: string;
     }[];
+    compileCommandLine: string;
+    compiler: string;
+    version: string;
+    verificationDate: Date;
 }
 declare type IpfsUrlConverterFunc = (ipfsUrl: string) => string;
 declare global {

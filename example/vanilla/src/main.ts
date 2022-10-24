@@ -57,7 +57,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 window.onload = async () => {
   const ipfslink = await ContractVerifier.getSourcesJsonUrl(
     "/rX/aCDi/w2Ug+fg1iyBfYRniftK5YDIeIZtlZ2r1cA=",
-    { httpApiEndpoint: "https://scalable-api.tonwhales.com/jsonRPC" }
+    // { httpApiEndpoint: "https://scalable-api.tonwhales.com/jsonRPC" }
   );
 
   if (ipfslink) {

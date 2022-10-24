@@ -97741,9 +97741,9 @@
     getSourcesData: function(sourcesJsonUrl, ipfsConverter) {
       return __async(this, null, function* () {
         ipfsConverter = ipfsConverter != null ? ipfsConverter : (ipfs) => ipfs.replace("ipfs://", "https://tonsource.infura-ipfs.io/ipfs/");
-        this.verifiedContract = yield (yield fetch(ipfsConverter(sourcesJsonUrl))).json();
+        const verifiedContract = yield (yield fetch(ipfsConverter(sourcesJsonUrl))).json();
         const files = yield Promise.all(
-          this.verifiedContract.sources.map(
+          verifiedContract.sources.map(
             (source) => __async(this, null, function* () {
               const url = ipfsConverter(source.url);
               const content = yield fetch(url).then((u) => u.text());
@@ -97754,7 +97754,13 @@
             })
           )
         );
-        return { files: files.reverse() };
+        return {
+          files: files.reverse(),
+          verificationDate: new Date(verifiedContract.verificationDate),
+          compileCommandLine: verifiedContract.compileCommandLine,
+          compiler: verifiedContract.compiler,
+          version: verifiedContract.version
+        };
       });
     }
   };

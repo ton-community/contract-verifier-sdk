@@ -19,6 +19,10 @@ interface GetSourcesOptions {
 
 interface SourcesData {
   files: { name: string; content: string }[];
+  compileCommandLine: string;
+  compiler: string;
+  version: string;
+  verificationDate: Date;
 }
 
 type IpfsUrlConverterFunc = (ipfsUrl: string) => string;
@@ -93,13 +97,13 @@ const _ContractVerifier = {
       ((ipfs) =>
         ipfs.replace("ipfs://", "https://tonsource.infura-ipfs.io/ipfs/"));
 
-    this.verifiedContract = await (
+    const verifiedContract = await (
       await fetch(ipfsConverter(sourcesJsonUrl))
     ).json();
 
     // TODO filename => name
     const files = await Promise.all(
-      this.verifiedContract.sources.map(
+      verifiedContract.sources.map(
         async (source: { url: string; filename: string }) => {
           const url = ipfsConverter(source.url);
           const content = await fetch(url).then((u) => u.text());
@@ -111,7 +115,13 @@ const _ContractVerifier = {
       )
     );
 
-    return { files: files.reverse() };
+    return {
+      files: files.reverse(),
+      verificationDate: new Date(verifiedContract.verificationDate),
+      compileCommandLine: verifiedContract.compileCommandLine,
+      compiler: verifiedContract.compiler,
+      version: verifiedContract.version,
+    };
   },
 };
 
