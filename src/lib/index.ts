@@ -17,7 +17,7 @@ interface GetSourcesOptions {
   httpApiKey?: string;
 }
 
-interface SourcesData {
+export interface SourcesData {
   files: { name: string; content: string }[];
   compileCommandLine: string;
   compiler: string;

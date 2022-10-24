@@ -5,7 +5,7 @@ interface GetSourcesOptions {
     httpApiEndpoint?: string;
     httpApiKey?: string;
 }
-interface SourcesData {
+export interface SourcesData {
     files: {
         name: string;
         content: string;
