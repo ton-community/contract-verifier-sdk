@@ -32,7 +32,7 @@ declare global {
   var ContractVerifierUI: typeof _ContractVerifierUI;
 }
 
-const SOURCES_REGISTRY = "EQANJEwItCel0Pwle7fHaL1FRYC2dZyyzKCOqK2yjrMcxN-g";
+const SOURCES_REGISTRY = "EQAE0zE0g2U0hxXnWAF4y0fzbDDpwTmdAsDHUqZXNmFQsy_1";
 
 function toSha256Buffer(s: string) {
   const sha = new Sha256();
