@@ -70,7 +70,7 @@ async ContractVerifier.getSourcesJsonUrl(codeCellHash: string, options?: GetSour
 
 interface SourcesData {
   files: { name: string; content: string }[];
-  compileCommandLine: string;
+  commandLine: string;
   compiler: string;
   version: string;
   verificationDate: Date;

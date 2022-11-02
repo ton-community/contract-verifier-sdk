@@ -19,7 +19,7 @@ interface GetSourcesOptions {
 
 export interface SourcesData {
   files: { name: string; content: string }[];
-  compileCommandLine: string;
+  commandLine: string;
   compiler: string;
   version: string;
   verificationDate: Date;
@@ -118,7 +118,7 @@ const _ContractVerifier = {
     return {
       files: files.reverse(),
       verificationDate: new Date(verifiedContract.verificationDate),
-      compileCommandLine: verifiedContract.compileCommandLine,
+      commandLine: verifiedContract.commandLine,
       compiler: verifiedContract.compiler,
       version: verifiedContract.version,
     };

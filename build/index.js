@@ -97757,7 +97757,7 @@
         return {
           files: files.reverse(),
           verificationDate: new Date(verifiedContract.verificationDate),
-          compileCommandLine: verifiedContract.compileCommandLine,
+          commandLine: verifiedContract.commandLine,
           compiler: verifiedContract.compiler,
           version: verifiedContract.version
         };

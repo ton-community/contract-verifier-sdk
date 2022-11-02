@@ -10,7 +10,7 @@ export interface SourcesData {
         name: string;
         content: string;
     }[];
-    compileCommandLine: string;
+    commandLine: string;
     compiler: string;
     version: string;
     verificationDate: Date;
