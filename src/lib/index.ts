@@ -75,12 +75,11 @@ const _ContractVerifier = {
         sourceItemAddr,
         "get_source_item_data"
       );
-      const ipfsLink = Cell.fromBoc(
+      const contentCell = Cell.fromBoc(
         Buffer.from(sourceItemDataStack[4][1].bytes, "base64")
-      )[0]
-        .beginParse()
-        .readRemainingBytes()
-        .toString();
+      )[0].beginParse();
+      contentCell.readUintNumber(8); // skip version
+      const ipfsLink = contentCell.readRemainingBytes().toString();
 
       return ipfsLink;
     }
