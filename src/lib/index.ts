@@ -76,7 +76,7 @@ const _ContractVerifier = {
         "get_source_item_data"
       );
       const contentCell = Cell.fromBoc(
-        Buffer.from(sourceItemDataStack[4][1].bytes, "base64")
+        Buffer.from(sourceItemDataStack[3][1].bytes, "base64")
       )[0].beginParse();
       contentCell.readUintNumber(8); // skip version
       const ipfsLink = contentCell.readRemainingBytes().toString();

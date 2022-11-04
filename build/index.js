@@ -97731,7 +97731,7 @@
             "get_source_item_data"
           );
           const contentCell = import_ton.Cell.fromBoc(
-            Buffer2.from(sourceItemDataStack[4][1].bytes, "base64")
+            Buffer2.from(sourceItemDataStack[3][1].bytes, "base64")
           )[0].beginParse();
           contentCell.readUintNumber(8);
           const ipfsLink = contentCell.readRemainingBytes().toString();
