@@ -97730,9 +97730,11 @@
             sourceItemAddr,
             "get_source_item_data"
           );
-          const ipfsLink = import_ton.Cell.fromBoc(
+          const contentCell = import_ton.Cell.fromBoc(
             Buffer2.from(sourceItemDataStack[4][1].bytes, "base64")
-          )[0].beginParse().readRemainingBytes().toString();
+          )[0].beginParse();
+          contentCell.readUintNumber(8);
+          const ipfsLink = contentCell.readRemainingBytes().toString();
           return ipfsLink;
         }
         return null;
