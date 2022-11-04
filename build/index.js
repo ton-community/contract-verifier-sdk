@@ -97696,7 +97696,7 @@
 
   // src/lib/index.ts
   src_default(es_default);
-  var SOURCES_REGISTRY = "EQCFYXRqFFnXfXSnicF8vYxR7jGw4T9B3aNVpeHHVzR2jnuv";
+  var SOURCES_REGISTRY = "EQD-BJSVUJviud_Qv7Ymfd3qzXdrmV525e3YDzWQoHIAiInL";
   function toSha256Buffer(s) {
     const sha = new import_sha256_js.Sha256();
     sha.update(s);
