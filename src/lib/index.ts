@@ -78,7 +78,8 @@ const _ContractVerifier = {
       const contentCell = Cell.fromBoc(
         Buffer.from(sourceItemDataStack[3][1].bytes, "base64")
       )[0].beginParse();
-      contentCell.readUintNumber(8); // skip version
+      const version = contentCell.readUintNumber(8);
+      if (version !== 1) throw new Error("Unsupported version");
       const ipfsLink = contentCell.readRemainingBytes().toString();
 
       return ipfsLink;

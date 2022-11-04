@@ -97733,7 +97733,9 @@
           const contentCell = import_ton.Cell.fromBoc(
             Buffer2.from(sourceItemDataStack[3][1].bytes, "base64")
           )[0].beginParse();
-          contentCell.readUintNumber(8);
+          const version2 = contentCell.readUintNumber(8);
+          if (version2 !== 1)
+            throw new Error("Unsupported version");
           const ipfsLink = contentCell.readRemainingBytes().toString();
           return ipfsLink;
         }
