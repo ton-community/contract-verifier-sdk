@@ -179,6 +179,7 @@ var _ContractVerifierUI = {
     theme: "dark" | "light"
   ) {
     const filePart = document.querySelector(fileListSelector);
+    filePart.innerHTML = "";
     filePart.classList.add(theme);
     filePart.classList.add(this.classNames.FILES);
 
