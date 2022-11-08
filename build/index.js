@@ -97804,6 +97804,7 @@
     },
     _populateFiles: function(fileListSelector, contentSelector, files, theme) {
       const filePart = document.querySelector(fileListSelector);
+      filePart.innerHTML = "";
       filePart.classList.add(theme);
       filePart.classList.add(this.classNames.FILES);
       files.forEach(({ name, content }) => {
