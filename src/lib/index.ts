@@ -23,6 +23,8 @@ export interface SourcesData {
   compiler: string;
   version: string;
   verificationDate: Date;
+  fiftLibCommit: string;
+  fiftCommit: string;
 }
 
 type IpfsUrlConverterFunc = (ipfsUrl: string) => string;
@@ -121,6 +123,8 @@ const _ContractVerifier = {
       commandLine: verifiedContract.commandLine,
       compiler: verifiedContract.compiler,
       version: verifiedContract.version,
+      fiftCommit: verifiedContract.fiftCommit,
+      fiftLibCommit: verifiedContract.fiftLibCommit,
     };
   },
 };
