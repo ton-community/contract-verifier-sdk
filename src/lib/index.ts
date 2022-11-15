@@ -17,14 +17,20 @@ interface GetSourcesOptions {
   httpApiKey?: string;
 }
 
+export type FuncCompilerVersion = "0.2.0" | "0.3.0";
+
+export type FuncCompilerSettings = {
+  funcVersion: FuncCompilerVersion;
+  commandLine: string;
+  fiftVersion: string;
+  fiftlibVersion: string;
+};
+
 export interface SourcesData {
   files: { name: string; content: string }[];
-  commandLine: string;
   compiler: string;
-  version: string;
+  compilerSettings: FuncCompilerSettings;
   verificationDate: Date;
-  fiftLibCommit: string;
-  fiftCommit: string;
 }
 
 type IpfsUrlConverterFunc = (ipfsUrl: string) => string;
@@ -120,11 +126,8 @@ const _ContractVerifier = {
     return {
       files: files.reverse(),
       verificationDate: new Date(verifiedContract.verificationDate),
-      commandLine: verifiedContract.commandLine,
+      compilerSettings: verifiedContract.compilerSettings,
       compiler: verifiedContract.compiler,
-      version: verifiedContract.version,
-      fiftCommit: verifiedContract.fiftCommit,
-      fiftLibCommit: verifiedContract.fiftLibCommit,
     };
   },
 };

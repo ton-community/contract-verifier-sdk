@@ -5,17 +5,21 @@ interface GetSourcesOptions {
   httpApiEndpoint?: string;
   httpApiKey?: string;
 }
+export declare type FuncCompilerVersion = "0.2.0" | "0.3.0";
+export declare type FuncCompilerSettings = {
+  funcVersion: FuncCompilerVersion;
+  commandLine: string;
+  fiftVersion: string;
+  fiftlibVersion: string;
+};
 export interface SourcesData {
   files: {
     name: string;
     content: string;
   }[];
-  commandLine: string;
   compiler: string;
-  version: string;
+  compilerSettings: FuncCompilerSettings;
   verificationDate: Date;
-  fiftLibCommit: string;
-  fiftCommit: string;
 }
 declare type IpfsUrlConverterFunc = (ipfsUrl: string) => string;
 declare global {

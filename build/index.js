@@ -103815,11 +103815,8 @@
         return {
           files: files.reverse(),
           verificationDate: new Date(verifiedContract.verificationDate),
-          commandLine: verifiedContract.commandLine,
+          compilerSettings: verifiedContract.compilerSettings,
           compiler: verifiedContract.compiler,
-          version: verifiedContract.version,
-          fiftCommit: verifiedContract.fiftCommit,
-          fiftLibCommit: verifiedContract.fiftLibCommit,
         };
       });
     },
