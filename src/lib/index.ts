@@ -2,7 +2,7 @@ import { Address, Cell, TonClient } from "ton";
 import { BN } from "bn.js";
 import { getHttpEndpoint } from "@orbs-network/ton-gateway";
 import { Sha256 } from "@aws-crypto/sha256-js";
-import hljs from "highlight.js";
+import hljs from "highlight.js/lib/core";
 import hljsDefine from "highlightjs-func";
 hljsDefine(hljs);
 
