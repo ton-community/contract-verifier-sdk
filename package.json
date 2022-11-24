@@ -1,13 +1,14 @@
 {
   "name": "@ton-community/contract-verifier-sdk",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Ton contract code viewer for func with code highlighting ",
   "main": "build/index.js",
   "scripts": {
     "start": "webpack-dev-server --hot",
     "build": "rm -rf build && node build.js && tsc",
     "build:min": "esbuild ./src/lib/index.ts --bundle --target=es2015 --outfile=./build/index.js",
-    "npm-publish": "npm publish --access=public"
+    "npm-publish": "npm publish --access=public",
+    "analyze": "source-map-explorer 'build/*.js' --no-border-checks"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
     "esbuild-plugin-polyfill-node": "^0.0.2",
     "highlight.js": "^11.6.0",
     "highlightjs-func": "^0.3.0",
+    "source-map-explorer": "^2.5.3",
     "ton": "^12.1.3"
   },
   "devDependencies": {
