@@ -6,7 +6,6 @@
   "scripts": {
     "start": "webpack-dev-server --hot",
     "build": "rm -rf build && node build.js && tsc",
-    "build:min": "esbuild ./src/lib/index.ts --bundle --target=es2015 --outfile=./build/index.js",
     "npm-publish": "npm publish --access=public",
     "analyze": "source-map-explorer 'build/*.js' --no-border-checks"
   },
@@ -35,7 +34,7 @@
     "highlight.js": "^11.6.0",
     "highlightjs-func": "^0.3.0",
     "source-map-explorer": "^2.5.3",
-    "ton": "^12.1.3"
+    "ton": "^12.1.5"
   },
   "devDependencies": {
     "@types/bn.js": "^5.1.1",

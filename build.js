@@ -4,7 +4,7 @@ let StyleLoader = {
     let fs = require("fs");
     onLoad({ filter: /\.css$/ }, async (args) => {
       let css = await fs.promises.readFile(args.path, "utf8");
-      return { contents: css, loader: 'text' };
+      return { contents: css, loader: "text" };
     });
   },
 };
@@ -20,6 +20,7 @@ const { nodePolyfills } = require("esbuild-plugin-polyfill-node");
       target: "es2015",
       outfile: "./build/index.js",
       sourcemap: true,
+      minify: true,
     })
     .catch(() => process.exit(1));
 })();
