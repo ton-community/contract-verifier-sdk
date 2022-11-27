@@ -130,17 +130,7 @@ const _ContractVerifier = {
           }
         )
       )
-    )
-      .concat([
-        { name: "moko.fc", isEntrypoint: false, content: "" },
-        { name: "boko/boko.fc", isEntrypoint: false, content: "" },
-        { name: "boko/koko.fc", isEntrypoint: false, content: "" },
-        { name: "shoko.fc", isEntrypoint: false, content: "" },
-        { name: "zoko/zoko.fc", isEntrypoint: false, content: "" },
-      ])
-      .sort((a, b) => (a.isEntrypoint ? -1 : 1));
-
-    console.log(files, "IJDAIOSJDOAS");
+    ).sort((a, b) => (a.isEntrypoint ? -1 : 1));
 
     return {
       files: files,
@@ -342,7 +332,6 @@ var _ContractVerifierUI = {
       );
     }
     this._populateCode(opts.contentSelector, opts.theme);
-    console.log(sourcesData.files, "ko");
     this._setCode(
       sourcesData.files[0],
       document.querySelector(opts.contentSelector),
