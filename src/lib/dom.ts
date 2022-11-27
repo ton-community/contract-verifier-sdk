@@ -8,7 +8,6 @@ export function appendChildren(parent, children) {
     if (!child) continue;
     switch (typeof child) {
       case "string":
-        // throw "HUH"; // TODO remove
         const el = document.createTextNode(child);
         parent.appendChild(el);
         break;
@@ -21,7 +20,6 @@ export function appendChildren(parent, children) {
 
 export function setStyle(el, style) {
   if (typeof style == "string") {
-    // throw "HUH2"; // TODO remove
     el.setAttribute("style", style);
   } else {
     Object.assign(el.style, style);
