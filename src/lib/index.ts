@@ -130,7 +130,11 @@ const _ContractVerifier = {
           }
         )
       )
-    ).sort((a, b) => (a.isEntrypoint ? -1 : 1));
+    )
+      .reverse()
+      .sort((a, b) => {
+        return Number(b.isEntrypoint) - Number(a.isEntrypoint);
+      });
 
     return {
       files: files,

@@ -57,7 +57,8 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 window.onload = async () => {
   const ipfslink = await ContractVerifier.getSourcesJsonUrl(
     // "E/XXoxbG124QU+iKxZtd5loHKjiEUTcdxcW+y7oT9Q4="
-    "/rX/aCDi/w2Ug+fg1iyBfYRniftK5YDIeIZtlZ2r1cA="
+    // "/rX/aCDi/w2Ug+fg1iyBfYRniftK5YDIeIZtlZ2r1cA="
+    "p6Jhak1jmgdsL2fnzOBCP9Khwu5VCtZRwe2hbuE7yso="
     // { httpApiEndpoint: "https://scalable-api.tonwhales.com/jsonRPC" }
   );
 
