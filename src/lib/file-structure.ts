@@ -1,36 +1,51 @@
-import { div } from "./dom";
+import { div, img } from "./dom";
+import fileWhite from "./res/file-white.svg";
+import fileBlack from "./res/file-black.svg";
+import folderClosedWhite from "./res/folder-closed-white.svg";
+import folderClosedBlack from "./res/folder-closed-black.svg";
+import folderOpenWhite from "./res/folder-open-white.svg";
+import folderOpenBlack from "./res/folder-open-black.svg";
 
-const File = ({ name }) => {
+const icons = {
+  dark: {
+    file: fileWhite,
+    folder: {
+      open: folderOpenWhite,
+      closed: folderClosedWhite,
+    },
+  },
+  light: {
+    file: fileBlack,
+    folder: {
+      open: folderOpenBlack,
+      closed: folderClosedBlack,
+    },
+  },
+};
+
+const svgToInline = (svg) =>
+  `data:image/svg+xml;base64,${Buffer.from(svg, "utf8").toString("base64")}`;
+
+export const TreeFile = ({ name }, theme) => {
   return div(
-    { className: "file" },
-    div({ className: "material-icons", style: "opacity: 0;" }, "arrow_right"), // TODO
-    div({ className: "material-icons" }, "insert_drive_file"), // TODO
+    { className: "contract-verifier-file" },
+    img({
+      src: svgToInline(icons[theme].file),
+    }),
     div(null, name)
   );
 };
 
-/* Folder */
-
-const openedFolderIcon = "folder_open";
-const closedFolderIcon = "folder";
-const openedArrowIcon = "arrow_drop_down";
-const closedArrowIcon = "arrow_right";
-
-function changeOpened(event) {
+function changeOpened(theme, event) {
   const folderHeader = event.target.classList.contains("folder-header")
     ? event.target
     : event.target.parentElement;
   const opened = folderHeader.getAttribute("opened") == "true";
   const newOpened = !opened;
 
-  let icons = folderHeader.querySelectorAll(".material-icons");
-  icons.forEach((icon) => {
-    if (/arrow/i.test(icon.textContent)) {
-      icon.textContent = newOpened ? openedArrowIcon : closedArrowIcon;
-    } else {
-      icon.textContent = newOpened ? openedFolderIcon : closedFolderIcon;
-    }
-  });
+  folderHeader.children[0].attributes.src.value = svgToInline(
+    newOpened ? icons[theme].folder.open : icons[theme].folder.closed
+  );
 
   try {
     const sibling = folderHeader.nextElementSibling;
@@ -46,22 +61,22 @@ function changeOpened(event) {
   folderHeader.setAttribute("opened", newOpened);
 }
 
-const Folder = (props, ...children) => {
+export const TreeFolder = (props, theme, ...children) => {
   const opened = props.opened || false;
-  const arrowIcon = opened ? openedArrowIcon : closedArrowIcon;
-  const folderIcon = opened ? openedFolderIcon : closedFolderIcon;
+  const folderIcon = icons[theme].folder[opened ? "open" : "closed"];
   const folderName = props.name || "unknown";
 
   return div(
     { className: "folder" },
     div(
       {
-        onClick: changeOpened,
-        className: "folder-header",
+        onClick: changeOpened.bind(this, theme),
+        className: "folder-header contract-verifier-folder",
         opened: opened,
       },
-      div({ className: "material-icons" }, arrowIcon),
-      div({ className: "material-icons" }, folderIcon),
+      img({
+        src: svgToInline(folderIcon),
+      }),
       div(null, folderName)
     ),
     div({ className: opened ? "" : "hide" }, ...children)

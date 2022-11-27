@@ -7,6 +7,7 @@ import hljsDefine from "highlightjs-func";
 hljsDefine(hljs);
 
 import style from "./style.css";
+import { TreeFolder, TreeFile } from "./file-structure";
 
 type Theme = "light" | "dark";
 type Layout = "row" | "column";
@@ -144,11 +145,13 @@ var _ContractVerifierUI = {
   _populateCode: function (contentSelector: string, theme: "dark" | "light") {
     const codeContainer = document.querySelector(contentSelector);
     codeContainer.classList.add(this.classNames.CONTENT);
-    const dark = require("highlight.js/styles/atom-one-dark.css").toString();
-    const light = require("highlight.js/styles/atom-one-light.css").toString();
 
     const styleEl = document.createElement("style");
-    styleEl.innerHTML = `${theme === "light" ? light : dark} ${style}`;
+    styleEl.innerHTML = `${
+      theme === "light"
+        ? require("highlight.js/styles/atom-one-light.css").toString()
+        : require("highlight.js/styles/atom-one-dark.css").toString()
+    } ${style}`;
     document.head.appendChild(styleEl);
 
     codeContainer.innerHTML = `<pre><code class="language-func ${theme}"></code></pre>`;
@@ -191,26 +194,13 @@ var _ContractVerifierUI = {
     filePart.classList.add(theme);
     filePart.classList.add(this.classNames.FILES);
 
-    // TODO TEMP
-    files = files.map((f) => ({ ...f, name: `koko/${f.name}` }));
-    files = files.concat([
-      {
-        content: "",
-        name: "shoko/joko.fc",
-      },
-      {
-        content: "",
-        name: "main.fc",
-      },
-    ]);
-
-    const hierarchy = {
+    // Prepare folder hierarchy
+    const root = {
       type: "root",
       children: [],
     };
 
     files.forEach((file) => {
-      console.log(file.name);
       const nameParts = Array.from(
         file.name.matchAll(/(?:\/|^)([^\/\n]+)/g)
       ).map((m) => m[1]);
@@ -218,7 +208,7 @@ var _ContractVerifierUI = {
       const folders =
         nameParts.length > 1 ? nameParts.slice(0, nameParts.length - 1) : [];
 
-      let levelToPushTo = hierarchy;
+      let levelToPushTo = root;
 
       folders.forEach((folder) => {
         let existingFolder = levelToPushTo.children.find(
@@ -242,108 +232,36 @@ var _ContractVerifierUI = {
       levelToPushTo.children.push({
         type: "file",
         name: nameParts[nameParts.length - 1],
+        content: file.content,
       });
-
-      // return {
-      //   name: nameParts[nameParts.length - 1],
-      //   folders:
-      //     nameParts.length > 1 ? nameParts.slice(0, nameParts.length - 1) : [],
-      //   content: f.content,
-      // };
     });
 
-    console.log(hierarchy);
+    function processLevel(level) {
+      return level.children
+        .sort((a, _) => (a.type === "file" ? -1 : 0))
+        .map((child) => {
+          if (child.type === "file") {
+            const file = TreeFile({ name: child.name }, theme);
+            file.onclick = () => {
+              ContractVerifierUI._setCode(
+                { name: child.name, content: child.content },
+                document.querySelector(contentSelector),
+                document.querySelector(fileListSelector),
+                file
+              );
+            };
+            return file;
+          } else if (child.type === "folder") {
+            return TreeFolder(
+              { name: child.name, opened: true },
+              theme,
+              ...processLevel(child)
+            );
+          }
+        });
+    }
 
-    // const filesProcessed = files.map((f) => {
-    //   const nameParts = Array.from(f.name.matchAll(/(?:\/|^)([^\/\n]+)/g)).map(
-    //     (m) => m[1]
-    //   );
-
-    //   return {
-    //     name: nameParts[nameParts.length - 1],
-    //     folders:
-    //       nameParts.length > 1 ? nameParts.slice(0, nameParts.length - 1) : [],
-    //     content: f.content,
-    //   };
-    // });
-
-    // const expandCollapse = () => {
-    //   const folderPathsState = {};
-
-    //   const isClosedInPath = (path: string) => {};
-
-    //   Array.from(
-    //     filePart.getElementsByClassName(this.classNames.FOLDER)
-    //   ).forEach((el) => {
-    //     const hel = el as HTMLElement;
-    //     folderPathsState[hel.dataset.path] = hel.dataset.isOpen === "true";
-    //   });
-
-    //   Array.from(filePart.children).forEach((el) => {
-    //     const hel = el as HTMLElement;
-    //     folderPathsState[hel.dataset.path] = hel.dataset.isOpen === "true";
-    //   });
-
-    //   // Array.from(filePart.getElementsByClassName(this.classNames.FILE)).forEach(
-    //   //   (e) => {
-    //   //     // (e as HTMLElement).style.display = "none";
-    //   //     // console.log((e as HTMLElement).style.display)
-    //   //     let x = e as HTMLElement;
-    //   //     if (x.style.display === "none") {
-    //   //       x.style.display = "block";
-    //   //     } else {
-    //   //       x.style.display = "none";
-    //   //     }
-    //   //   }
-    //   // );
-    // };
-
-    // const folderPathsProcessed = {};
-    // filesProcessed.forEach(({ name, content, folders }) => {
-    //   // const folderPath = folders?.join("/");
-
-    //   let foldersInProcess = "";
-
-    //   folders.forEach((f, i) => {
-    //     foldersInProcess += f;
-
-    //     if (!folderPathsProcessed[foldersInProcess]) {
-    //       folderPathsProcessed[foldersInProcess] = true;
-    //       const folderEl = document.createElement("div");
-    //       folderEl.classList.add(this.classNames.FOLDER);
-    //       folderEl.textContent = f;
-    //       folderEl.style.textIndent = i * 10 + "px";
-    //       filePart.appendChild(folderEl);
-    //       folderEl.dataset.isOpen = "true";
-    //       // folderEl.onclick = () => {
-    //       //   folderEl.dataset.isOpen =
-    //       //     folderEl.dataset.isOpen === "true" ? "false" : "true";
-    //       //   folderEl.dataset.path = foldersInProcess;
-    //       //   expandCollapse();
-    //       // };
-    //     }
-
-    //     foldersInProcess += "/";
-    //   });
-
-    //   const fileLevel = folders.length;
-
-    //   const el = document.createElement("div");
-    //   el.classList.add(this.classNames.FILE);
-    //   el.innerText = name;
-    //   el.style.textIndent = fileLevel * 10 + "px";
-    //   el.style;
-    //   el.onclick = () => {
-    //     this._setCode(
-    //       { name, content },
-    //       document.querySelector(contentSelector),
-    //       document.querySelector(fileListSelector),
-    //       el
-    //     );
-    //   };
-    //   el.dataset.path = folders.join("/");
-    //   filePart.appendChild(el);
-    // });
+    processLevel(root).forEach((el) => filePart.appendChild(el));
   },
 
   _populateContainer: function (selector: string, layout?: "row" | "column") {
