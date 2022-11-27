@@ -30,7 +30,7 @@ export type FuncCompilerSettings = {
 };
 
 export interface SourcesData {
-  files: { name: string; content: string }[];
+  files: { name: string; content: string; isEntrypoint: boolean }[];
   compiler: string;
   compilerSettings: FuncCompilerSettings;
   verificationDate: Date;
@@ -112,22 +112,30 @@ const _ContractVerifier = {
       await fetch(ipfsConverter(sourcesJsonUrl))
     ).json();
 
-    // TODO filename => name
-    const files = await Promise.all(
-      verifiedContract.sources.map(
-        async (source: { url: string; filename: string }) => {
-          const url = ipfsConverter(source.url);
-          const content = await fetch(url).then((u) => u.text());
-          return {
-            name: source.filename,
-            content,
-          };
-        }
+    console.log(verifiedContract);
+
+    const files = (
+      await Promise.all(
+        verifiedContract.sources.map(
+          async (source: {
+            url: string;
+            filename: string;
+            isEntrypoint: boolean;
+          }) => {
+            const url = ipfsConverter(source.url);
+            const content = await fetch(url).then((u) => u.text());
+            return {
+              name: source.filename,
+              content,
+              isEntrypoint: source.isEntrypoint,
+            };
+          }
+        )
       )
-    );
+    ).sort((a, b) => (a.isEntrypoint ? -1 : 1));
 
     return {
-      files: files.reverse(),
+      files: files,
       verificationDate: new Date(verifiedContract.verificationDate),
       compilerSettings: verifiedContract.compilerSettings,
       compiler: verifiedContract.compiler,
