@@ -1,59 +1,79 @@
 .contract-verifier-container {
-    display: flex;
-    height: 100%;
+  display: flex;
+  height: 100%;
 }
 
 .contract-verifier-container.column {
-    flex-direction: column;
+  flex-direction: column;
 }
 
 .contract-verifier-code {
-    text-align: left;
-    overflow: auto;
-    height: 100%;
-    width: 100%;
+  text-align: left;
+  overflow: auto;
+  height: 100%;
+  width: 100%;
 }
 
 .contract-verifier-code pre {
-    margin: 0
+  margin: 0;
 }
 
 .contract-verifier-container.column .contract-verifier-files {
-    flex-direction: row;
+  flex-direction: row;
 }
 
 .contract-verifier-files {
-    text-align: left;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
+  text-align: left;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  overflow-y: auto;
 }
 
 .contract-verifier-files.dark {
-    background: #28292d;
+  background: #28292d;
 }
 
 .contract-verifier-files.light {
-    background: #fff;
+  background: #fff;
 }
 
 .contract-verifier-file {
-    padding: 10px 20px;
-    cursor: pointer;
+  padding: 10px 6px;
+  cursor: pointer;
+  display: flex;
+  gap: 4px;
+}
+
+.contract-verifier-folder {
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  gap: 6px;
 }
 
 .contract-verifier-files.dark .contract-verifier-file:hover {
-    filter: brightness(0.8);
+  filter: brightness(0.8);
 }
 
 .contract-verifier-files.light .contract-verifier-file:hover {
-    background-color: #f6f6f6;
+  background-color: #f6f6f6;
 }
 
 .contract-verifier-files.dark .contract-verifier-file.active {
-    background: #232222;
+  background: #232222;
 }
 
 .contract-verifier-files.light .contract-verifier-file.active {
-    background: #f2f2f2;
+  background: #f2f2f2;
+}
+
+.contract-verifier-files .hide {
+  display: none;
+}
+
+.contract-verifier-folder-container > div {
+  padding-left: 8px;
 }

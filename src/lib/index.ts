@@ -7,6 +7,7 @@ import hljsDefine from "highlightjs-func";
 hljsDefine(hljs);
 
 import style from "./style.css";
+import { TreeFolder, TreeFile } from "./file-structure";
 
 type Theme = "light" | "dark";
 type Layout = "row" | "column";
@@ -132,22 +133,26 @@ const _ContractVerifier = {
   },
 };
 
-var _ContractVerifierUI = {
-  classNames: {
-    CONTAINER: "contract-verifier-container",
-    FILES: "contract-verifier-files",
-    FILE: "contract-verifier-file",
-    CONTENT: "contract-verifier-code",
-  },
+export const classNames = {
+  CONTAINER: "contract-verifier-container",
+  FILES: "contract-verifier-files",
+  FILE: "contract-verifier-file",
+  FOLDER: "contract-verifier-folder",
+  FOLDER_CONTAINER: "contract-verifier-folder-container",
+  CONTENT: "contract-verifier-code",
+};
 
+var _ContractVerifierUI = {
   _populateCode: function (contentSelector: string, theme: "dark" | "light") {
     const codeContainer = document.querySelector(contentSelector);
-    codeContainer.classList.add(this.classNames.CONTENT);
-    const dark = require("highlight.js/styles/atom-one-dark.css").toString();
-    const light = require("highlight.js/styles/atom-one-light.css").toString();
+    codeContainer.classList.add(classNames.CONTENT);
 
     const styleEl = document.createElement("style");
-    styleEl.innerHTML = `${theme === "light" ? light : dark} ${style}`;
+    styleEl.innerHTML = `${
+      theme === "light"
+        ? require("highlight.js/styles/atom-one-light.css").toString()
+        : require("highlight.js/styles/atom-one-dark.css").toString()
+    } ${style}`;
     document.head.appendChild(styleEl);
 
     codeContainer.innerHTML = `<pre><code class="language-func ${theme}"></code></pre>`;
@@ -166,7 +171,7 @@ var _ContractVerifierUI = {
     hljs.highlightElement(codeEl as HTMLElement);
 
     filesListEl
-      ?.querySelector(`.${this.classNames.FILE}.active`)
+      ?.querySelector(`.${classNames.FILE}.active`)
       ?.classList.remove("active");
 
     fileEl?.classList.add("active");
@@ -188,27 +193,81 @@ var _ContractVerifierUI = {
     const filePart = document.querySelector(fileListSelector);
     filePart.innerHTML = "";
     filePart.classList.add(theme);
-    filePart.classList.add(this.classNames.FILES);
+    filePart.classList.add(classNames.FILES);
 
-    files.forEach(({ name, content }) => {
-      const el = document.createElement("div");
-      el.classList.add(this.classNames.FILE);
-      el.innerText = name;
-      el.onclick = () => {
-        this._setCode(
-          { name, content },
-          document.querySelector(contentSelector),
-          document.querySelector(fileListSelector),
-          el
+    // Prepare folder hierarchy
+    const root = {
+      type: "root",
+      children: [],
+    };
+
+    files.forEach((file) => {
+      const nameParts = Array.from(
+        file.name.matchAll(/(?:\/|^)([^\/\n]+)/g)
+      ).map((m) => m[1]);
+
+      const folders =
+        nameParts.length > 1 ? nameParts.slice(0, nameParts.length - 1) : [];
+
+      let levelToPushTo = root;
+
+      folders.forEach((folder) => {
+        let existingFolder = levelToPushTo.children.find(
+          (obj) => obj.type === "folder" && obj.name === folder
         );
-      };
-      filePart.appendChild(el);
+
+        if (!existingFolder) {
+          const newLevel = {
+            type: "folder",
+            name: folder,
+            children: [],
+          };
+          levelToPushTo.children.push(newLevel);
+
+          existingFolder = newLevel;
+        }
+
+        levelToPushTo = existingFolder;
+      });
+
+      levelToPushTo.children.push({
+        type: "file",
+        name: nameParts[nameParts.length - 1],
+        content: file.content,
+      });
     });
+
+    function processLevel(level) {
+      return level.children
+        .sort((a, _) => (a.type === "file" ? -1 : 0))
+        .map((child) => {
+          if (child.type === "file") {
+            const file = TreeFile({ name: child.name }, theme);
+            file.onclick = () => {
+              ContractVerifierUI._setCode(
+                { name: child.name, content: child.content },
+                document.querySelector(contentSelector),
+                document.querySelector(fileListSelector),
+                file
+              );
+            };
+            return file;
+          } else if (child.type === "folder") {
+            return TreeFolder(
+              { name: child.name, opened: true },
+              theme,
+              ...processLevel(child)
+            );
+          }
+        });
+    }
+
+    processLevel(root).forEach((el) => filePart.appendChild(el));
   },
 
   _populateContainer: function (selector: string, layout?: "row" | "column") {
     const el = document.querySelector(selector);
-    el.classList.add(this.classNames.CONTAINER);
+    el.classList.add(classNames.CONTAINER);
     if (layout === "column") {
       el.classList.add("column");
     }
