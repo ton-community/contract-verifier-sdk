@@ -137,6 +137,7 @@ var _ContractVerifierUI = {
     CONTAINER: "contract-verifier-container",
     FILES: "contract-verifier-files",
     FILE: "contract-verifier-file",
+    FOLDER: "contract-verifier-folder",
     CONTENT: "contract-verifier-code",
   },
 
@@ -190,20 +191,159 @@ var _ContractVerifierUI = {
     filePart.classList.add(theme);
     filePart.classList.add(this.classNames.FILES);
 
-    files.forEach(({ name, content }) => {
-      const el = document.createElement("div");
-      el.classList.add(this.classNames.FILE);
-      el.innerText = name;
-      el.onclick = () => {
-        this._setCode(
-          { name, content },
-          document.querySelector(contentSelector),
-          document.querySelector(fileListSelector),
-          el
+    // TODO TEMP
+    files = files.map((f) => ({ ...f, name: `koko/${f.name}` }));
+    files = files.concat([
+      {
+        content: "",
+        name: "shoko/joko.fc",
+      },
+      {
+        content: "",
+        name: "main.fc",
+      },
+    ]);
+
+    const hierarchy = {
+      type: "root",
+      children: [],
+    };
+
+    files.forEach((file) => {
+      console.log(file.name);
+      const nameParts = Array.from(
+        file.name.matchAll(/(?:\/|^)([^\/\n]+)/g)
+      ).map((m) => m[1]);
+
+      const folders =
+        nameParts.length > 1 ? nameParts.slice(0, nameParts.length - 1) : [];
+
+      let levelToPushTo = hierarchy;
+
+      folders.forEach((folder) => {
+        let existingFolder = levelToPushTo.children.find(
+          (obj) => obj.type === "folder" && obj.name === folder
         );
-      };
-      filePart.appendChild(el);
+
+        if (!existingFolder) {
+          const newLevel = {
+            type: "folder",
+            name: folder,
+            children: [],
+          };
+          levelToPushTo.children.push(newLevel);
+
+          existingFolder = newLevel;
+        }
+
+        levelToPushTo = existingFolder;
+      });
+
+      levelToPushTo.children.push({
+        type: "file",
+        name: nameParts[nameParts.length - 1],
+      });
+
+      // return {
+      //   name: nameParts[nameParts.length - 1],
+      //   folders:
+      //     nameParts.length > 1 ? nameParts.slice(0, nameParts.length - 1) : [],
+      //   content: f.content,
+      // };
     });
+
+    console.log(hierarchy);
+
+    // const filesProcessed = files.map((f) => {
+    //   const nameParts = Array.from(f.name.matchAll(/(?:\/|^)([^\/\n]+)/g)).map(
+    //     (m) => m[1]
+    //   );
+
+    //   return {
+    //     name: nameParts[nameParts.length - 1],
+    //     folders:
+    //       nameParts.length > 1 ? nameParts.slice(0, nameParts.length - 1) : [],
+    //     content: f.content,
+    //   };
+    // });
+
+    // const expandCollapse = () => {
+    //   const folderPathsState = {};
+
+    //   const isClosedInPath = (path: string) => {};
+
+    //   Array.from(
+    //     filePart.getElementsByClassName(this.classNames.FOLDER)
+    //   ).forEach((el) => {
+    //     const hel = el as HTMLElement;
+    //     folderPathsState[hel.dataset.path] = hel.dataset.isOpen === "true";
+    //   });
+
+    //   Array.from(filePart.children).forEach((el) => {
+    //     const hel = el as HTMLElement;
+    //     folderPathsState[hel.dataset.path] = hel.dataset.isOpen === "true";
+    //   });
+
+    //   // Array.from(filePart.getElementsByClassName(this.classNames.FILE)).forEach(
+    //   //   (e) => {
+    //   //     // (e as HTMLElement).style.display = "none";
+    //   //     // console.log((e as HTMLElement).style.display)
+    //   //     let x = e as HTMLElement;
+    //   //     if (x.style.display === "none") {
+    //   //       x.style.display = "block";
+    //   //     } else {
+    //   //       x.style.display = "none";
+    //   //     }
+    //   //   }
+    //   // );
+    // };
+
+    // const folderPathsProcessed = {};
+    // filesProcessed.forEach(({ name, content, folders }) => {
+    //   // const folderPath = folders?.join("/");
+
+    //   let foldersInProcess = "";
+
+    //   folders.forEach((f, i) => {
+    //     foldersInProcess += f;
+
+    //     if (!folderPathsProcessed[foldersInProcess]) {
+    //       folderPathsProcessed[foldersInProcess] = true;
+    //       const folderEl = document.createElement("div");
+    //       folderEl.classList.add(this.classNames.FOLDER);
+    //       folderEl.textContent = f;
+    //       folderEl.style.textIndent = i * 10 + "px";
+    //       filePart.appendChild(folderEl);
+    //       folderEl.dataset.isOpen = "true";
+    //       // folderEl.onclick = () => {
+    //       //   folderEl.dataset.isOpen =
+    //       //     folderEl.dataset.isOpen === "true" ? "false" : "true";
+    //       //   folderEl.dataset.path = foldersInProcess;
+    //       //   expandCollapse();
+    //       // };
+    //     }
+
+    //     foldersInProcess += "/";
+    //   });
+
+    //   const fileLevel = folders.length;
+
+    //   const el = document.createElement("div");
+    //   el.classList.add(this.classNames.FILE);
+    //   el.innerText = name;
+    //   el.style.textIndent = fileLevel * 10 + "px";
+    //   el.style;
+    //   el.onclick = () => {
+    //     this._setCode(
+    //       { name, content },
+    //       document.querySelector(contentSelector),
+    //       document.querySelector(fileListSelector),
+    //       el
+    //     );
+    //   };
+    //   el.dataset.path = folders.join("/");
+    //   filePart.appendChild(el);
+    // });
   },
 
   _populateContainer: function (selector: string, layout?: "row" | "column") {

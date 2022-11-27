@@ -27,6 +27,8 @@
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
+    width: 200px;
+    overflow-y: auto;
 }
 
 .contract-verifier-files.dark {
@@ -38,8 +40,14 @@
 }
 
 .contract-verifier-file {
+    padding: 10px 24px;
+    cursor: pointer;
+}
+
+.contract-verifier-folder {
     padding: 10px 20px;
     cursor: pointer;
+    font-weight: 600;
 }
 
 .contract-verifier-files.dark .contract-verifier-file:hover {
