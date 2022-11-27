@@ -29,14 +29,6 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
     </div>
     <button id="container-nofiles-btn">Switch file</button>
 
-    // <h2>Column</h2>
-    // <div id="myContainerColumn" style="height:500px; background-color:#282c34; width:100%; margin-bottom: 8px;">
-    //   <div id="myFilesColumn">
-    //   </div>
-    //   <div id="myContentColumn">
-    //   </div>
-    // </div>
-
     <h2>With Explanation</h2>
     <div id="myContainerExplanation" style="height:500px; background-color:#282c34; width:100%;">
       <div id="myFilesExplanation">
@@ -109,15 +101,6 @@ window.onload = async () => {
           sourcesData.files[1].content
         );
       };
-
-    // // Column
-    // ContractVerifierUI.loadSourcesData(sourcesData, {
-    //   containerSelector: "#myContainerColumn",
-    //   fileListSelector: "#myFilesColumn",
-    //   contentSelector: "#myContentColumn",
-    //   theme,
-    //   layout: "column",
-    // });
 
     // Explanation
     ContractVerifierUI.loadSourcesData(sourcesData, {
