@@ -16,6 +16,7 @@
 
 .contract-verifier-code code {
   display: flex;
+  padding: 0.5em;
 }
 
 .contract-verifier-code code .contract-verifier-code-lines {
@@ -33,7 +34,7 @@
 }
 
 .contract-verifier-code code.light .contract-verifier-code-lines {
-  color: #b3b3b3;
+  color: #728A96;
 }
 
 .contract-verifier-code pre {
@@ -66,20 +67,23 @@
   cursor: pointer;
   display: flex;
   gap: 4px;
+  user-select: none;
 }
 
 .contract-verifier-folder {
   padding: 10px 20px;
   cursor: pointer;
-  font-weight: 600;
   display: flex;
-  gap: 6px;
+  gap: 4px;
+  user-select: none;
 }
 
+.contract-verifier-files.dark .contract-verifier-folder:hover,
 .contract-verifier-files.dark .contract-verifier-file:hover {
   filter: brightness(0.8);
 }
 
+.contract-verifier-files.light .contract-verifier-folder:hover,
 .contract-verifier-files.light .contract-verifier-file:hover {
   background-color: #f6f6f6;
 }

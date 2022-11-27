@@ -31,6 +31,7 @@ https://github.com/highlightjs/highlight.js/issues/2277`),E=h,p=s),o===void 0&&(
 
 .contract-verifier-code code {
   display: flex;
+  padding: 0.5em;
 }
 
 .contract-verifier-code code .contract-verifier-code-lines {
@@ -48,7 +49,7 @@ https://github.com/highlightjs/highlight.js/issues/2277`),E=h,p=s),o===void 0&&(
 }
 
 .contract-verifier-code code.light .contract-verifier-code-lines {
-  color: #b3b3b3;
+  color: #728A96;
 }
 
 .contract-verifier-code pre {
@@ -81,20 +82,23 @@ https://github.com/highlightjs/highlight.js/issues/2277`),E=h,p=s),o===void 0&&(
   cursor: pointer;
   display: flex;
   gap: 4px;
+  user-select: none;
 }
 
 .contract-verifier-folder {
   padding: 10px 20px;
   cursor: pointer;
-  font-weight: 600;
   display: flex;
-  gap: 6px;
+  gap: 4px;
+  user-select: none;
 }
 
+.contract-verifier-files.dark .contract-verifier-folder:hover,
 .contract-verifier-files.dark .contract-verifier-file:hover {
   filter: brightness(0.8);
 }
 
+.contract-verifier-files.light .contract-verifier-folder:hover,
 .contract-verifier-files.light .contract-verifier-file:hover {
   background-color: #f6f6f6;
 }
@@ -114,7 +118,7 @@ https://github.com/highlightjs/highlight.js/issues/2277`),E=h,p=s),o===void 0&&(
 .contract-verifier-folder-container > div {
   padding-left: 8px;
 }
-`;O();q();W();P();N();O();q();W();P();N();var ti=(e,...t)=>k2("div",e,...t),K0=(e,...t)=>k2("img",e,...t);function BW(e,t){for(let r of t)if(!!r)switch(typeof r){case"string":let n=document.createTextNode(r);e.appendChild(n);break;default:e.appendChild(r);break}}function CW(e,t){typeof t=="string"?e.setAttribute("style",t):Object.assign(e.style,t)}function UW(e,t){t.split(/\s/).forEach(r=>{r&&e.classList.add(r)})}function TW(e,t){let r=/^on([a-z]+)$/i;for(let n in t)if(!!n)if(n==="style")CW(e,t[n]);else if(n==="className")UW(e,t[n]);else if(r.test(n)){let i=n.replace(r,"$1").toLowerCase();e.addEventListener(i,t[n])}else e.setAttribute(n,t[n])}function k2(e,t,...r){if(typeof e=="function")return e(t);{let n=document.createElement(e);return t&&typeof t=="object"&&TW(n,t),r&&BW(n,r),n}}var B2=`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+`;O();q();W();P();N();O();q();W();P();N();var ti=(e,...t)=>k2("div",e,...t);var K0=(e,...t)=>k2("img",e,...t);function BW(e,t){for(let r of t)if(!!r)switch(typeof r){case"string":let n=document.createTextNode(r);e.appendChild(n);break;default:e.appendChild(r);break}}function CW(e,t){typeof t=="string"?e.setAttribute("style",t):Object.assign(e.style,t)}function UW(e,t){t.split(/\s/).forEach(r=>{r&&e.classList.add(r)})}function TW(e,t){let r=/^on([a-z]+)$/i;for(let n in t)if(!!n)if(n==="style")CW(e,t[n]);else if(n==="className")UW(e,t[n]);else if(r.test(n)){let i=n.replace(r,"$1").toLowerCase();e.addEventListener(i,t[n])}else e.setAttribute(n,t[n])}function k2(e,t,...r){if(typeof e=="function")return e(t);{let n=document.createElement(e);return t&&typeof t=="object"&&TW(n,t),r&&BW(n,r),n}}var B2=`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_3604_24717)">
 <path d="M11 1H3C2.86739 1 2.74021 1.05268 2.64645 1.14645C2.55268 1.24021 2.5 1.36739 2.5 1.5V12.5C2.50079 13.1628 2.76444 13.7982 3.23311 14.2669C3.70178 14.7356 4.3372 14.9992 5 15H13C13.1326 15 13.2598 14.9473 13.3536 14.8536C13.4473 14.7598 13.5 14.6326 13.5 14.5V3.5C13.4992 2.8372 13.2356 2.20178 12.7669 1.73311C12.2982 1.26444 11.6628 1.00079 11 1ZM12.5 14H5C4.60218 14 4.22064 13.842 3.93934 13.5607C3.65804 13.2794 3.5 12.8978 3.5 12.5V2H11C11.3978 2 11.7794 2.15804 12.0607 2.43934C12.342 2.72064 12.5 3.10218 12.5 3.5V14Z" fill="white"/>
 <path d="M9.5 1.5V5H13M-1 1V1.5" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
