@@ -30,7 +30,7 @@ export type FuncCompilerSettings = {
 };
 
 export interface SourcesData {
-  files: { name: string; content: string }[];
+  files: { name: string; content: string; isEntrypoint: boolean }[];
   compiler: string;
   compilerSettings: FuncCompilerSettings;
   verificationDate: Date;
@@ -112,22 +112,28 @@ const _ContractVerifier = {
       await fetch(ipfsConverter(sourcesJsonUrl))
     ).json();
 
-    // TODO filename => name
-    const files = await Promise.all(
-      verifiedContract.sources.map(
-        async (source: { url: string; filename: string }) => {
-          const url = ipfsConverter(source.url);
-          const content = await fetch(url).then((u) => u.text());
-          return {
-            name: source.filename,
-            content,
-          };
-        }
+    const files = (
+      await Promise.all(
+        verifiedContract.sources.map(
+          async (source: {
+            url: string;
+            filename: string;
+            isEntrypoint: boolean;
+          }) => {
+            const url = ipfsConverter(source.url);
+            const content = await fetch(url).then((u) => u.text());
+            return {
+              name: source.filename,
+              content,
+              isEntrypoint: source.isEntrypoint,
+            };
+          }
+        )
       )
-    );
+    ).sort((a, b) => (a.isEntrypoint ? -1 : 1));
 
     return {
-      files: files.reverse(),
+      files: files,
       verificationDate: new Date(verifiedContract.verificationDate),
       compilerSettings: verifiedContract.compilerSettings,
       compiler: verifiedContract.compiler,
@@ -256,27 +262,30 @@ var _ContractVerifierUI = {
 
     function processLevel(level) {
       return level.children
-        .sort((a, _) => (a.type === "file" ? -1 : 0))
+        .filter((obj) => obj.type === "file")
         .map((child) => {
-          if (child.type === "file") {
-            const file = TreeFile({ name: child.name }, theme);
-            file.onclick = () => {
-              ContractVerifierUI._setCode(
-                { name: child.name, content: child.content },
-                document.querySelector(contentSelector),
-                document.querySelector(fileListSelector),
-                file
-              );
-            };
-            return file;
-          } else if (child.type === "folder") {
-            return TreeFolder(
-              { name: child.name, opened: true },
-              theme,
-              ...processLevel(child)
+          const file = TreeFile({ name: child.name }, theme);
+          file.onclick = () => {
+            ContractVerifierUI._setCode(
+              { name: child.name, content: child.content },
+              document.querySelector(contentSelector),
+              document.querySelector(fileListSelector),
+              file
             );
-          }
-        });
+          };
+          return file;
+        })
+        .concat(
+          level.children
+            .filter((obj) => obj.type === "folder")
+            .map((child) =>
+              TreeFolder(
+                { name: child.name, opened: true },
+                theme,
+                ...processLevel(child)
+              )
+            )
+        );
     }
 
     processLevel(root).forEach((el) => filePart.appendChild(el));

@@ -16,6 +16,7 @@ export interface SourcesData {
     files: {
         name: string;
         content: string;
+        isEntrypoint: boolean;
     }[];
     compiler: string;
     compilerSettings: FuncCompilerSettings;
