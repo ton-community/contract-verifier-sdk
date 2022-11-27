@@ -4,10 +4,12 @@ import { getHttpEndpoint } from "@orbs-network/ton-gateway";
 import { Sha256 } from "@aws-crypto/sha256-js";
 import hljs from "highlight.js/lib/core";
 import hljsDefine from "highlightjs-func";
+
 hljsDefine(hljs);
 
 import style from "./style.css";
 import { TreeFolder, TreeFile } from "./file-structure";
+import { div } from "./dom";
 
 type Theme = "light" | "dark";
 type Layout = "row" | "column";
@@ -140,6 +142,7 @@ export const classNames = {
   FOLDER: "contract-verifier-folder",
   FOLDER_CONTAINER: "contract-verifier-folder-container",
   CONTENT: "contract-verifier-code",
+  LINES: "contract-verifier-code-lines",
 };
 
 var _ContractVerifierUI = {
@@ -166,9 +169,23 @@ var _ContractVerifierUI = {
   ) {
     if (fileEl?.classList.contains("active")) return;
     codeWrapperEl.scrollTo(0, 0);
+    content = content.trim();
     const codeEl = codeWrapperEl.querySelector("code");
-    codeEl.textContent = content;
-    hljs.highlightElement(codeEl as HTMLElement);
+    codeEl.innerHTML = "";
+    codeEl.appendChild(
+      div(
+        { className: classNames.LINES },
+        content
+          .split("\n")
+          .map((_, i) => i + 1)
+          .join("\n")
+      )
+    );
+    codeEl.appendChild(div({}, content));
+
+    hljs.highlightElement(
+      codeEl.children[codeEl.children.length - 1] as HTMLElement
+    );
 
     filesListEl
       ?.querySelector(`.${classNames.FILE}.active`)
@@ -265,11 +282,18 @@ var _ContractVerifierUI = {
     processLevel(root).forEach((el) => filePart.appendChild(el));
   },
 
-  _populateContainer: function (selector: string, layout?: "row" | "column") {
+  _populateContainer: function (
+    selector: string,
+    hideLineNumbers: boolean,
+    layout?: "row" | "column"
+  ) {
     const el = document.querySelector(selector);
     el.classList.add(classNames.CONTAINER);
     if (layout === "column") {
       el.classList.add("column");
+    }
+    if (!hideLineNumbers) {
+      el.classList.add("lineNumbers");
     }
   },
 
@@ -281,9 +305,14 @@ var _ContractVerifierUI = {
       contentSelector: string;
       theme: Theme;
       layout?: Layout;
+      hideLineNumbers?: boolean;
     }
   ) {
-    this._populateContainer(opts.containerSelector, opts.layout);
+    this._populateContainer(
+      opts.containerSelector,
+      !!opts.hideLineNumbers,
+      opts.layout
+    );
 
     if (opts.fileListSelector) {
       this._populateFiles(

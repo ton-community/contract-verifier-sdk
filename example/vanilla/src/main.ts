@@ -14,20 +14,20 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
       </div>
     </div>
     
+    <h2>No line numbers</h2>
+    <div id="myContainerNoLineNum" style="height:500px; background-color:#282c34; width:100%;">
+      <div id="myFilesNoLineNum">
+      </div>
+      <div id="myContentNoLineNum">
+      </div>
+    </div>
+    
     <h2>No Files</h2>
     <div id="myContainerNoFiles" style="height:500px; background-color:#282c34; width:100%; margin-bottom: 8px;">
       <div id="myContentNoFiles">
       </div>
     </div>
     <button id="container-nofiles-btn">Switch file</button>
-
-    <h2>Column</h2>
-    <div id="myContainerColumn" style="height:500px; background-color:#282c34; width:100%; margin-bottom: 8px;">
-      <div id="myFilesColumn">
-      </div>
-      <div id="myContentColumn">
-      </div>
-    </div>
 
     <h2>With Explanation</h2>
     <div id="myContainerExplanation" style="height:500px; background-color:#282c34; width:100%;">
@@ -56,14 +56,12 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 
 window.onload = async () => {
   const ipfslink = await ContractVerifier.getSourcesJsonUrl(
-    "E/XXoxbG124QU+iKxZtd5loHKjiEUTcdxcW+y7oT9Q4=",
+    "E/XXoxbG124QU+iKxZtd5loHKjiEUTcdxcW+y7oT9Q4="
     // { httpApiEndpoint: "https://scalable-api.tonwhales.com/jsonRPC" }
   );
 
   if (ipfslink) {
-    const sourcesData = await ContractVerifier.getSourcesData(
-      ipfslink
-    );
+    const sourcesData = await ContractVerifier.getSourcesData(ipfslink);
 
     const theme =
       window.matchMedia &&
@@ -77,6 +75,15 @@ window.onload = async () => {
       fileListSelector: "#myFilesFull",
       contentSelector: "#myContentFull",
       theme,
+    });
+
+    // No line num
+    ContractVerifierUI.loadSourcesData(sourcesData, {
+      containerSelector: "#myContainerNoLineNum",
+      fileListSelector: "#myFilesNoLineNum",
+      contentSelector: "#myContentNoLineNum",
+      theme,
+      hideLineNumbers: true,
     });
 
     // No files
@@ -94,15 +101,6 @@ window.onload = async () => {
           sourcesData.files[1].content
         );
       };
-
-    // Row
-    ContractVerifierUI.loadSourcesData(sourcesData, {
-      containerSelector: "#myContainerColumn",
-      fileListSelector: "#myFilesColumn",
-      contentSelector: "#myContentColumn",
-      theme,
-      layout: "column",
-    });
 
     // Explanation
     ContractVerifierUI.loadSourcesData(sourcesData, {

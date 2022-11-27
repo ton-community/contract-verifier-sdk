@@ -1,5 +1,7 @@
 export const div = (props, ...children) =>
   createElement("div", props, ...children);
+export const code = (props, ...children) =>
+  createElement("code", props, ...children);
 export const img = (props, ...children) =>
   createElement("img", props, ...children);
 
