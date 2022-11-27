@@ -133,18 +133,19 @@ const _ContractVerifier = {
   },
 };
 
-var _ContractVerifierUI = {
-  classNames: {
-    CONTAINER: "contract-verifier-container",
-    FILES: "contract-verifier-files",
-    FILE: "contract-verifier-file",
-    FOLDER: "contract-verifier-folder",
-    CONTENT: "contract-verifier-code",
-  },
+export const classNames = {
+  CONTAINER: "contract-verifier-container",
+  FILES: "contract-verifier-files",
+  FILE: "contract-verifier-file",
+  FOLDER: "contract-verifier-folder",
+  FOLDER_CONTAINER: "contract-verifier-folder-container",
+  CONTENT: "contract-verifier-code",
+};
 
+var _ContractVerifierUI = {
   _populateCode: function (contentSelector: string, theme: "dark" | "light") {
     const codeContainer = document.querySelector(contentSelector);
-    codeContainer.classList.add(this.classNames.CONTENT);
+    codeContainer.classList.add(classNames.CONTENT);
 
     const styleEl = document.createElement("style");
     styleEl.innerHTML = `${
@@ -170,7 +171,7 @@ var _ContractVerifierUI = {
     hljs.highlightElement(codeEl as HTMLElement);
 
     filesListEl
-      ?.querySelector(`.${this.classNames.FILE}.active`)
+      ?.querySelector(`.${classNames.FILE}.active`)
       ?.classList.remove("active");
 
     fileEl?.classList.add("active");
@@ -192,7 +193,7 @@ var _ContractVerifierUI = {
     const filePart = document.querySelector(fileListSelector);
     filePart.innerHTML = "";
     filePart.classList.add(theme);
-    filePart.classList.add(this.classNames.FILES);
+    filePart.classList.add(classNames.FILES);
 
     // Prepare folder hierarchy
     const root = {
@@ -266,7 +267,7 @@ var _ContractVerifierUI = {
 
   _populateContainer: function (selector: string, layout?: "row" | "column") {
     const el = document.querySelector(selector);
-    el.classList.add(this.classNames.CONTAINER);
+    el.classList.add(classNames.CONTAINER);
     if (layout === "column") {
       el.classList.add("column");
     }

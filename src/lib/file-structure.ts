@@ -5,6 +5,7 @@ import folderClosedWhite from "./res/folder-closed-white.svg";
 import folderClosedBlack from "./res/folder-closed-black.svg";
 import folderOpenWhite from "./res/folder-open-white.svg";
 import folderOpenBlack from "./res/folder-open-black.svg";
+import { classNames } from "./index";
 
 const icons = {
   dark: {
@@ -28,7 +29,7 @@ const svgToInline = (svg) =>
 
 export const TreeFile = ({ name }, theme) => {
   return div(
-    { className: "contract-verifier-file" },
+    { className: classNames.FILE },
     img({
       src: svgToInline(icons[theme].file),
     }),
@@ -67,11 +68,11 @@ export const TreeFolder = (props, theme, ...children) => {
   const folderName = props.name || "unknown";
 
   return div(
-    { className: "folder" },
+    { className: classNames.FOLDER_CONTAINER },
     div(
       {
         onClick: changeOpened.bind(this, theme),
-        className: "folder-header contract-verifier-folder",
+        className: `folder-header ${classNames.FOLDER}`,
         opened: opened,
       },
       img({

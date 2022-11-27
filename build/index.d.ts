@@ -30,14 +30,15 @@ declare const _ContractVerifier: {
     getSourcesJsonUrl: (codeCellHash: string, options?: GetSourcesOptions) => Promise<string | null>;
     getSourcesData: (sourcesJsonUrl: string, ipfsConverter?: IpfsUrlConverterFunc) => Promise<SourcesData>;
 };
+export declare const classNames: {
+    CONTAINER: string;
+    FILES: string;
+    FILE: string;
+    FOLDER: string;
+    FOLDER_CONTAINER: string;
+    CONTENT: string;
+};
 declare var _ContractVerifierUI: {
-    classNames: {
-        CONTAINER: string;
-        FILES: string;
-        FILE: string;
-        FOLDER: string;
-        CONTENT: string;
-    };
     _populateCode: (contentSelector: string, theme: "dark" | "light") => void;
     _setCode: ({ name, content }: {
         name: string;
