@@ -37,6 +37,7 @@ export declare const classNames: {
     FOLDER: string;
     FOLDER_CONTAINER: string;
     CONTENT: string;
+    LINES: string;
 };
 declare var _ContractVerifierUI: {
     _populateCode: (contentSelector: string, theme: "dark" | "light") => void;
@@ -49,13 +50,14 @@ declare var _ContractVerifierUI: {
         name: string;
         content: string;
     }[], theme: "dark" | "light") => void;
-    _populateContainer: (selector: string, layout?: "row" | "column") => void;
+    _populateContainer: (selector: string, hideLineNumbers: boolean, layout?: "row" | "column") => void;
     loadSourcesData: (sourcesData: SourcesData, opts: {
         containerSelector: string;
         fileListSelector?: string;
         contentSelector: string;
         theme: Theme;
         layout?: Layout;
+        hideLineNumbers?: boolean;
     }) => void;
 };
 export {};

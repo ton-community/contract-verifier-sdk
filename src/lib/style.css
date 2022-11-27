@@ -14,6 +14,28 @@
   width: 100%;
 }
 
+.contract-verifier-code code {
+  display: flex;
+}
+
+.contract-verifier-code code .contract-verifier-code-lines {
+  padding: 0 20px 0 0;
+  text-align: right;
+  display: none;
+}
+
+.contract-verifier-container.lineNumbers .contract-verifier-code-lines {
+  display: initial;
+}
+
+.contract-verifier-code code.dark .contract-verifier-code-lines {
+  color: #7e7e7e;
+}
+
+.contract-verifier-code code.light .contract-verifier-code-lines {
+  color: #b3b3b3;
+}
+
 .contract-verifier-code pre {
   margin: 0;
 }
