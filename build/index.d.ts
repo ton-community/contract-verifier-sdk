@@ -42,6 +42,10 @@ export declare const classNames: {
     LINES: string;
 };
 declare var _ContractVerifierUI: {
+    _stylesPopulated: {
+        internal: boolean;
+    };
+    _populateStyle: (theme: "dark" | "light") => void;
     _populateCode: (contentSelector: string, theme: "dark" | "light") => void;
     _setCode: ({ name, content }: {
         name: string;

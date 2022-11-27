@@ -157,18 +157,30 @@ export const classNames = {
 };
 
 var _ContractVerifierUI = {
+  _stylesPopulated: {
+    internal: false,
+  },
+  _populateStyle: function(theme: "dark" | "light") {
+    if (!this._stylesPopulated[theme]) {
+      this._stylesPopulated[theme] = true;
+      const styleEl = document.createElement("style");
+      styleEl.innerHTML = `${
+        theme === "light"
+          ? require("highlight.js/styles/atom-one-light.css").toString()
+          : require("highlight.js/styles/atom-one-dark.css").toString()
+      }`;
+      document.head.appendChild(styleEl);
+    }
+    if (!this._stylesPopulated.internal) {
+      this._stylesPopulated.internal = true;
+      const styleEl = document.createElement("style");
+      styleEl.innerHTML = style;
+      document.head.appendChild(styleEl);
+    }
+  },
   _populateCode: function (contentSelector: string, theme: "dark" | "light") {
     const codeContainer = document.querySelector(contentSelector);
     codeContainer.classList.add(classNames.CONTENT);
-
-    const styleEl = document.createElement("style");
-    styleEl.innerHTML = `${
-      theme === "light"
-        ? require("highlight.js/styles/atom-one-light.css").toString()
-        : require("highlight.js/styles/atom-one-dark.css").toString()
-    } ${style}`;
-    document.head.appendChild(styleEl);
-
     codeContainer.innerHTML = `<pre><code class="language-func ${theme}"></code></pre>`;
   },
 
@@ -336,6 +348,7 @@ var _ContractVerifierUI = {
         opts.theme
       );
     }
+    this._populateStyle(opts.theme);
     this._populateCode(opts.contentSelector, opts.theme);
     this._setCode(
       sourcesData.files[0],
