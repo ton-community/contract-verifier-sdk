@@ -36,6 +36,7 @@ export declare const classNames: {
     FILES: string;
     FILE: string;
     FOLDER: string;
+    TREE_ITEM: string;
     FOLDER_CONTAINER: string;
     CONTENT: string;
     LINES: string;

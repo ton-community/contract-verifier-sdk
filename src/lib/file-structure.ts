@@ -29,7 +29,7 @@ const svgToInline = (svg) =>
 
 export const TreeFile = ({ name }, theme) => {
   return div(
-    { className: classNames.FILE },
+    { className: `${classNames.FILE} ${classNames.TREE_ITEM}` },
     img({
       src: svgToInline(icons[theme].file),
     }),
@@ -72,7 +72,7 @@ export const TreeFolder = (props, theme, ...children) => {
     div(
       {
         onClick: changeOpened.bind(this, theme),
-        className: `folder-header ${classNames.FOLDER}`,
+        className: `folder-header ${classNames.FOLDER} ${classNames.TREE_ITEM}`,
         opened: opened,
       },
       img({

@@ -150,6 +150,7 @@ export const classNames = {
   FILES: "contract-verifier-files",
   FILE: "contract-verifier-file",
   FOLDER: "contract-verifier-folder",
+  TREE_ITEM: "contract-verifier-tree-item",
   FOLDER_CONTAINER: "contract-verifier-folder-container",
   CONTENT: "contract-verifier-code",
   LINES: "contract-verifier-code-lines",
