@@ -19,6 +19,10 @@
   padding: 0.5em;
 }
 
+.contract-verifier-code code div {
+  background: transparent;
+}
+
 .contract-verifier-code code .contract-verifier-code-lines {
   padding: 0 20px 0 0;
   text-align: right;
@@ -34,7 +38,7 @@
 }
 
 .contract-verifier-code code.light .contract-verifier-code-lines {
-  color: #728A96;
+  color: #728a96;
 }
 
 .contract-verifier-code pre {

@@ -112,8 +112,6 @@ const _ContractVerifier = {
       await fetch(ipfsConverter(sourcesJsonUrl))
     ).json();
 
-    console.log(verifiedContract);
-
     const files = (
       await Promise.all(
         verifiedContract.sources.map(
@@ -132,7 +130,17 @@ const _ContractVerifier = {
           }
         )
       )
-    ).sort((a, b) => (a.isEntrypoint ? -1 : 1));
+    )
+      .concat([
+        { name: "moko.fc", isEntrypoint: false, content: "" },
+        { name: "boko/boko.fc", isEntrypoint: false, content: "" },
+        { name: "boko/koko.fc", isEntrypoint: false, content: "" },
+        { name: "shoko.fc", isEntrypoint: false, content: "" },
+        { name: "zoko/zoko.fc", isEntrypoint: false, content: "" },
+      ])
+      .sort((a, b) => (a.isEntrypoint ? -1 : 1));
+
+    console.log(files, "IJDAIOSJDOAS");
 
     return {
       files: files,
@@ -264,27 +272,30 @@ var _ContractVerifierUI = {
 
     function processLevel(level) {
       return level.children
-        .sort((a, _) => (a.type === "file" ? -1 : 0))
+        .filter((obj) => obj.type === "file")
         .map((child) => {
-          if (child.type === "file") {
-            const file = TreeFile({ name: child.name }, theme);
-            file.onclick = () => {
-              ContractVerifierUI._setCode(
-                { name: child.name, content: child.content },
-                document.querySelector(contentSelector),
-                document.querySelector(fileListSelector),
-                file
-              );
-            };
-            return file;
-          } else if (child.type === "folder") {
-            return TreeFolder(
-              { name: child.name, opened: true },
-              theme,
-              ...processLevel(child)
+          const file = TreeFile({ name: child.name }, theme);
+          file.onclick = () => {
+            ContractVerifierUI._setCode(
+              { name: child.name, content: child.content },
+              document.querySelector(contentSelector),
+              document.querySelector(fileListSelector),
+              file
             );
-          }
-        });
+          };
+          return file;
+        })
+        .concat(
+          level.children
+            .filter((obj) => obj.type === "folder")
+            .map((child) =>
+              TreeFolder(
+                { name: child.name, opened: true },
+                theme,
+                ...processLevel(child)
+              )
+            )
+        );
     }
 
     processLevel(root).forEach((el) => filePart.appendChild(el));
@@ -331,6 +342,7 @@ var _ContractVerifierUI = {
       );
     }
     this._populateCode(opts.contentSelector, opts.theme);
+    console.log(sourcesData.files, "ko");
     this._setCode(
       sourcesData.files[0],
       document.querySelector(opts.contentSelector),
