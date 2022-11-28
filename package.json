@@ -32,7 +32,7 @@
     "bn.js": "^5.2.1",
     "esbuild-plugin-polyfill-node": "^0.0.2",
     "highlight.js": "^11.6.0",
-    "highlightjs-func": "^0.3.0",
+    "highlightjs-func": "github:orbs-network/highlightjs-func",
     "source-map-explorer": "^2.5.3",
     "ton": "^12.1.5"
   },

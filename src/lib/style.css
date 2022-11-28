@@ -94,6 +94,6 @@
   display: none;
 }
 
-.contract-verifier-folder-container > div {
+.contract-verifier-folder-container > .folder-content {
   padding-left: 12px;
 }

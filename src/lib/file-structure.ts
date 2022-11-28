@@ -80,6 +80,6 @@ export const TreeFolder = (props, theme, ...children) => {
       }),
       div(null, folderName)
     ),
-    div({ className: opened ? "" : "hide" }, ...children)
+    div({ className: `${opened ? "" : "hide"} folder-content` }, ...children)
   );
 };
