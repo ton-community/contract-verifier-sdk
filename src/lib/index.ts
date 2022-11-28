@@ -160,7 +160,7 @@ var _ContractVerifierUI = {
   _stylesPopulated: {
     internal: false,
   },
-  _populateStyle: function(theme: "dark" | "light") {
+  _populateStyle: function (theme: "dark" | "light") {
     if (!this._stylesPopulated[theme]) {
       this._stylesPopulated[theme] = true;
       const styleEl = document.createElement("style");
