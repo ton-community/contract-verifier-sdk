@@ -27,6 +27,7 @@ declare global {
     var ContractVerifier: typeof _ContractVerifier;
     var ContractVerifierUI: typeof _ContractVerifierUI;
 }
+export declare function defaultIpfsConverter(ipfs: string): string;
 declare const _ContractVerifier: {
     getSourcesJsonUrl: (codeCellHash: string, options?: GetSourcesOptions) => Promise<string | null>;
     getSourcesData: (sourcesJsonUrl: string, ipfsConverter?: IpfsUrlConverterFunc) => Promise<SourcesData>;
