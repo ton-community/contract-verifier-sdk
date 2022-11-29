@@ -34,6 +34,7 @@ export interface SourcesData {
   compiler: string;
   compilerSettings: FuncCompilerSettings;
   verificationDate: Date;
+  ipfsHttpLink: string;
 }
 
 type IpfsUrlConverterFunc = (ipfsUrl: string) => string;
@@ -50,6 +51,10 @@ function toSha256Buffer(s: string) {
   sha.update(s);
   return Buffer.from(sha.digestSync());
 }
+
+function defaultIpfsConverter(ipfs: string) {
+  return ipfs.replace("ipfs://", "https://tonsource.infura-ipfs.io/ipfs/");
+},
 
 const _ContractVerifier = {
   getSourcesJsonUrl: async function (
@@ -99,15 +104,12 @@ const _ContractVerifier = {
     return null;
   },
 
-  defaultIpfsConverter(ipfs: string) {
-    return ipfs.replace("ipfs://", "https://tonsource.infura-ipfs.io/ipfs/");
-  },
-
   getSourcesData: async function (
     sourcesJsonUrl: string,
     ipfsConverter?: IpfsUrlConverterFunc
   ): Promise<SourcesData> {
-    ipfsConverter = ipfsConverter ?? this.defaultIpfsConverter;
+    ipfsConverter = ipfsConverter ?? defaultIpfsConverter;
+    const ipfsHttpLink = ipfsConverter(sourcesJsonUrl)
 
     const verifiedContract = await (
       await fetch(ipfsConverter(sourcesJsonUrl))
@@ -142,6 +144,7 @@ const _ContractVerifier = {
       verificationDate: new Date(verifiedContract.verificationDate),
       compilerSettings: verifiedContract.compilerSettings,
       compiler: verifiedContract.compiler,
+      ipfsHttpLink
     };
   },
 };
