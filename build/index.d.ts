@@ -21,6 +21,7 @@ export interface SourcesData {
     compiler: string;
     compilerSettings: FuncCompilerSettings;
     verificationDate: Date;
+    ipfsHttpLink: string;
 }
 declare type IpfsUrlConverterFunc = (ipfsUrl: string) => string;
 declare global {
@@ -29,7 +30,6 @@ declare global {
 }
 declare const _ContractVerifier: {
     getSourcesJsonUrl: (codeCellHash: string, options?: GetSourcesOptions) => Promise<string | null>;
-    defaultIpfsConverter(ipfs: string): string;
     getSourcesData: (sourcesJsonUrl: string, ipfsConverter?: IpfsUrlConverterFunc) => Promise<SourcesData>;
 };
 export declare const classNames: {
