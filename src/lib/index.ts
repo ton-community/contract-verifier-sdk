@@ -51,6 +51,10 @@ function toSha256Buffer(s: string) {
   return Buffer.from(sha.digestSync());
 }
 
+export function defaultIpfsConverter(ipfs: string) {
+ return ipfs.replace("ipfs://", "https://tonsource.infura-ipfs.io/ipfs/"))
+}
+
 const _ContractVerifier = {
   getSourcesJsonUrl: async function (
     codeCellHash: string,
@@ -105,8 +109,7 @@ const _ContractVerifier = {
   ): Promise<SourcesData> {
     ipfsConverter =
       ipfsConverter ??
-      ((ipfs) =>
-        ipfs.replace("ipfs://", "https://tonsource.infura-ipfs.io/ipfs/"));
+      defaultIpfsConverter
 
     const verifiedContract = await (
       await fetch(ipfsConverter(sourcesJsonUrl))
