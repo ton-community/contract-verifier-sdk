@@ -2,13 +2,13 @@
   "compilerOptions": {
     "moduleResolution": "node",
     "target": "es6",
-    "outDir": "build",
+    "outDir": "lib",
     "declaration": true,
-    "declarationDir": "build",
+    "declarationDir": "lib",
     "sourceMap": true,
     "resolveJsonModule": true,
-    "emitDeclarationOnly": true,
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": true
   },
-  "exclude": ["src/demo", "build", "example"]
+  "include": ["src"],
+  "exclude": ["src/demo", "build", "example", "node_modules", "lib"]
 }

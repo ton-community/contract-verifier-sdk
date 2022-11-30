@@ -3,9 +3,12 @@
   "version": "0.0.3",
   "description": "Ton contract code viewer for func with code highlighting ",
   "main": "build/index.js",
+  "files": [
+    "lib/**/*"
+  ],
   "scripts": {
     "start": "webpack-dev-server --hot",
-    "build": "rm -rf build && node build.js && tsc",
+    "build": "rm -rf build lib && node build.js && tsc && cp lib/*.d.ts build",
     "npm-publish": "npm publish --access=public",
     "analyze": "source-map-explorer 'build/*.js' --no-border-checks"
   },
