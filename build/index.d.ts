@@ -39,8 +39,9 @@ export declare const classNames: {
     FOLDER: string;
     TREE_ITEM: string;
     FOLDER_CONTAINER: string;
-    CONTENT: string;
-    LINES: string;
+    CODE_CONTAINER: string;
+    CODE_LINES: string;
+    CODE_CONTENT: string;
 };
 declare var _ContractVerifierUI: {
     _stylesPopulated: {
