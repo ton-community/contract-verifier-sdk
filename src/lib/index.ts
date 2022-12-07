@@ -156,8 +156,9 @@ export const classNames = {
   FOLDER: "contract-verifier-folder",
   TREE_ITEM: "contract-verifier-tree-item",
   FOLDER_CONTAINER: "contract-verifier-folder-container",
-  CONTENT: "contract-verifier-code",
-  LINES: "contract-verifier-code-lines",
+  CODE_CONTAINER: "contract-verifier-code",
+  CODE_LINES: "contract-verifier-code-lines",
+  CODE_CONTENT: "contract-verifier-code-content",
 };
 
 var _ContractVerifierUI = {
@@ -184,8 +185,8 @@ var _ContractVerifierUI = {
   },
   _populateCode: function (contentSelector: string, theme: "dark" | "light") {
     const codeContainer = document.querySelector(contentSelector);
-    codeContainer.classList.add(classNames.CONTENT);
-    codeContainer.innerHTML = `<pre><code class="language-func ${theme}"></code></pre>`;
+    codeContainer.classList.add(classNames.CODE_CONTAINER);
+    codeContainer.innerHTML = `<pre><code class="${theme}"></code></pre>`;
   },
 
   _setCode: function (
@@ -201,18 +202,24 @@ var _ContractVerifierUI = {
     codeEl.innerHTML = "";
     codeEl.appendChild(
       div(
-        { className: classNames.LINES },
+        { className: classNames.CODE_LINES },
         content
           .split("\n")
           .map((_, i) => i + 1)
           .join("\n")
       )
     );
-    codeEl.appendChild(div({}, content));
 
-    hljs.highlightElement(
-      codeEl.children[codeEl.children.length - 1] as HTMLElement
-    );
+    const contentEl = div({}, content);
+    codeEl.appendChild(contentEl);
+
+    if (name.match(/\.fif(t)?$/)) {
+      contentEl.classList.add("language-fift");
+    } else {
+      contentEl.classList.add("language-func");
+    }
+
+    hljs.highlightElement(contentEl);
 
     filesListEl
       ?.querySelector(`.${classNames.FILE}.active`)
