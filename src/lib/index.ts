@@ -211,6 +211,7 @@ var _ContractVerifierUI = {
     );
 
     const contentEl = div({}, content);
+    contentEl.classList.add(classNames.CODE_CONTENT);
     codeEl.appendChild(contentEl);
 
     if (name.match(/\.fif(t)?$/)) {
