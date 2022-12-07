@@ -7,7 +7,8 @@
     "declarationDir": "lib",
     "sourceMap": true,
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
   },
   "include": ["src"],
   "exclude": ["src/demo", "build", "example", "node_modules", "lib"]

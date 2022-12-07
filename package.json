@@ -2,9 +2,9 @@
   "name": "@ton-community/contract-verifier-sdk",
   "version": "0.0.3",
   "description": "Ton contract code viewer for func with code highlighting ",
-  "main": "build/index.js",
+  "main": "lib/index.js",
   "files": [
-    "lib/**/*"
+    "build/**/*"
   ],
   "scripts": {
     "start": "webpack-dev-server --hot",
