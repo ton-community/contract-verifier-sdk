@@ -22,7 +22,7 @@ export interface SourcesData {
         isEntrypoint: boolean;
     }[];
     compiler: string;
-    compilerSettings: FuncCompilerSettings;
+    compilerSettings: FuncCompilerSettings | FiftCliCompileSettings;
     verificationDate: Date;
     ipfsHttpLink: string;
 }
