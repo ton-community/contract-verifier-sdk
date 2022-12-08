@@ -6,11 +6,14 @@ interface GetSourcesOptions {
     httpApiKey?: string;
 }
 export declare type FuncCompilerVersion = "0.2.0" | "0.3.0";
+export declare type FiftVersion = FuncCompilerVersion;
 export declare type FuncCompilerSettings = {
     funcVersion: FuncCompilerVersion;
     commandLine: string;
-    fiftVersion: string;
-    fiftlibVersion: string;
+};
+export declare type FiftCliCompileSettings = {
+    fiftVersion: FiftVersion;
+    commandLine: string;
 };
 export interface SourcesData {
     files: {

@@ -20,13 +20,16 @@ interface GetSourcesOptions {
   httpApiKey?: string;
 }
 
-export type FuncCompilerVersion = "0.2.0" | "0.3.0";
+export declare type FuncCompilerVersion = "0.2.0" | "0.3.0";
+export declare type FiftVersion = FuncCompilerVersion; // Fift is tied to a FunC version
 
-export type FuncCompilerSettings = {
+export declare type FuncCompilerSettings = {
   funcVersion: FuncCompilerVersion;
   commandLine: string;
-  fiftVersion: string;
-  fiftlibVersion: string;
+};
+export type FiftCliCompileSettings = {
+  fiftVersion: FiftVersion;
+  commandLine: string;
 };
 
 export interface SourcesData {
