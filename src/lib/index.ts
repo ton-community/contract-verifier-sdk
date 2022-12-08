@@ -35,7 +35,7 @@ export type FiftCliCompileSettings = {
 export interface SourcesData {
   files: { name: string; content: string; isEntrypoint: boolean }[];
   compiler: string;
-  compilerSettings: FuncCompilerSettings;
+  compilerSettings: FuncCompilerSettings | FiftCliCompileSettings;
   verificationDate: Date;
   ipfsHttpLink: string;
 }
