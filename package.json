@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "@types/bn.js": "^5.1.1",
-    "esbuild": "^0.15.10",
+    "esbuild": "^0.16.6",
     "esbuild-plugins-node-modules-polyfill": "^1.0.6",
     "eslint": "^8.23.0",
     "typescript-plugin-css-modules": "^3.4.0"
