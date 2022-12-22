@@ -6,6 +6,7 @@ interface GetSourcesOptions {
     httpApiKey?: string;
 }
 export declare type FuncCompilerVersion = "0.2.0" | "0.3.0";
+export declare type TactVersion = "0.4.0";
 export declare type FiftVersion = FuncCompilerVersion;
 export declare type FuncCompilerSettings = {
     funcVersion: FuncCompilerVersion;
@@ -16,7 +17,7 @@ export declare type FiftCliCompileSettings = {
     commandLine: string;
 };
 export declare type TactCliCompileSettings = {
-    tactVersion: "0.4.0";
+    tactVersion: TactVersion;
 };
 export declare type FuncSource = {
     name: string;
