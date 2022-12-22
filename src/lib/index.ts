@@ -41,7 +41,11 @@ export type FuncSource = {
   content: string;
   isEntrypoint: boolean;
 };
-export type TactSource = { name: string; type: "code" | "abi" };
+export type TactSource = {
+  name: string;
+  content: string;
+  type: "code" | "abi";
+};
 
 export interface SourcesData {
   files: (TactSource | FuncSource)[];
