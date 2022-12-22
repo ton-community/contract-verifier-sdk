@@ -44,7 +44,7 @@ export type TactSource = { name: string; type: "code" | "abi" };
 
 export interface SourcesData {
   files: (TactSource | FuncSource)[];
-  compiler: string;
+  compiler: "func" | "tact" | "fift";
   compilerSettings:
     | FuncCompilerSettings
     | FiftCliCompileSettings
@@ -155,7 +155,7 @@ const _ContractVerifier = {
       .reverse()
       .sort((a, b) => {
         if (a.type && b.type) {
-          return Number(b.type === "code") - Number(b.type === "code");
+          return Number(b.type === "code") - Number(a.type === "code");
         }
         return Number(b.isEntrypoint) - Number(a.isEntrypoint);
       });
