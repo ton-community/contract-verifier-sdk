@@ -29,7 +29,7 @@ export declare type TactSource = {
 };
 export interface SourcesData {
     files: (TactSource | FuncSource)[];
-    compiler: string;
+    compiler: "func" | "tact" | "fift";
     compilerSettings: FuncCompilerSettings | FiftCliCompileSettings | TactCliCompileSettings;
     verificationDate: Date;
     ipfsHttpLink: string;
