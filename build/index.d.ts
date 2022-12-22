@@ -15,14 +15,22 @@ export declare type FiftCliCompileSettings = {
     fiftVersion: FiftVersion;
     commandLine: string;
 };
+export declare type TactCliCompileSettings = {
+    tactVersion: "0.4.0";
+};
+export declare type FuncSource = {
+    name: string;
+    content: string;
+    isEntrypoint: boolean;
+};
+export declare type TactSource = {
+    name: string;
+    type: "code" | "abi";
+};
 export interface SourcesData {
-    files: {
-        name: string;
-        content: string;
-        isEntrypoint: boolean;
-    }[];
+    files: (TactSource | FuncSource)[];
     compiler: string;
-    compilerSettings: FuncCompilerSettings | FiftCliCompileSettings;
+    compilerSettings: FuncCompilerSettings | FiftCliCompileSettings | TactCliCompileSettings;
     verificationDate: Date;
     ipfsHttpLink: string;
 }

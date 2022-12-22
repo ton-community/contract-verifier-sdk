@@ -31,11 +31,24 @@ export type FiftCliCompileSettings = {
   fiftVersion: FiftVersion;
   commandLine: string;
 };
+export type TactCliCompileSettings = {
+  tactVersion: "0.4.0";
+};
+
+export type FuncSource = {
+  name: string;
+  content: string;
+  isEntrypoint: boolean;
+};
+export type TactSource = { name: string; type: "code" | "abi" };
 
 export interface SourcesData {
-  files: { name: string; content: string; isEntrypoint: boolean }[];
+  files: (TactSource | FuncSource)[];
   compiler: string;
-  compilerSettings: FuncCompilerSettings | FiftCliCompileSettings;
+  compilerSettings:
+    | FuncCompilerSettings
+    | FiftCliCompileSettings
+    | TactCliCompileSettings;
   verificationDate: Date;
   ipfsHttpLink: string;
 }
@@ -124,7 +137,8 @@ const _ContractVerifier = {
           async (source: {
             url: string;
             filename: string;
-            isEntrypoint: boolean;
+            isEntrypoint?: boolean;
+            type?: "code" | "abi";
           }) => {
             const url = ipfsConverter(source.url);
             const content = await fetch(url).then((u) => u.text());
@@ -132,6 +146,7 @@ const _ContractVerifier = {
               name: source.filename,
               content,
               isEntrypoint: source.isEntrypoint,
+              type: source.type,
             };
           }
         )
@@ -139,6 +154,9 @@ const _ContractVerifier = {
     )
       .reverse()
       .sort((a, b) => {
+        if (a.type && b.type) {
+          return Number(b.type === "code") - Number(b.type === "code");
+        }
         return Number(b.isEntrypoint) - Number(a.isEntrypoint);
       });
 
