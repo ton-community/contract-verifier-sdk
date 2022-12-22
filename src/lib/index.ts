@@ -21,6 +21,7 @@ interface GetSourcesOptions {
 }
 
 export declare type FuncCompilerVersion = "0.2.0" | "0.3.0";
+export declare type TactVersion = "0.4.0";
 export declare type FiftVersion = FuncCompilerVersion; // Fift is tied to a FunC version
 
 export declare type FuncCompilerSettings = {
@@ -32,7 +33,7 @@ export type FiftCliCompileSettings = {
   commandLine: string;
 };
 export type TactCliCompileSettings = {
-  tactVersion: "0.4.0";
+  tactVersion: TactVersion;
 };
 
 export type FuncSource = {
