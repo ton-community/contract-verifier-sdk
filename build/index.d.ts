@@ -26,6 +26,7 @@ export declare type FuncSource = {
 };
 export declare type TactSource = {
     name: string;
+    content: string;
     type: "code" | "abi";
 };
 export interface SourcesData {
