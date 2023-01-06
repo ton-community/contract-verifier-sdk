@@ -34,7 +34,7 @@
     "highlight.js": "^11.6.0",
     "highlightjs-func": "github:orbs-network/highlightjs-func",
     "source-map-explorer": "^2.5.3",
-    "ton": "^12.1.5"
+    "ton": "^13.3.0"
   },
   "devDependencies": {
     "@types/bn.js": "^5.1.1",
