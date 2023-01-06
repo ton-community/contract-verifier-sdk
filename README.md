@@ -1,7 +1,7 @@
-# Ton Contract Verifier 
+# TON Contract Verifier SDK
 
 ## TL;DR
-Ton verified contract code viewer for func with code highlighting 
+TON verified contract code viewer for func with code highlighting 
 
 ## Related repositories
 
@@ -10,7 +10,7 @@ This repo is a part of the following:
 1. [contract-verifier-contracts](https://github.com/ton-community/contract-verifier-contracts) - Sources registry contracts which stores an on-chain proof per code cell hash.
 2. [contract-verifier-backend](https://github.com/ton-community/contract-verifier-backend) - Backend for compiling FunC and returning a signature over a message containing the resulting code cell hash.
 3. [contract-verifier-sdk](https://github.com/ton-community/contract-verifier-sdk) (this repo) - A UI component to fetch and display sources from Ton blockchain and IPFS, including FunC code highlighting.
-4. [ton-contract-verifier](https://github.com/orbs-network/ton-contract-verifier) - A UI app to interact with the backend, contracts and publish an on-chain proof.
+4. [contract-verifier](https://github.com/ton-community/contract-verifier) - A UI app to interact with the backend, contracts and publish an on-chain proof.
 
 ## ⭐️ Features
 - Fetches contract sources code from the ipfs via a sources.json url  
