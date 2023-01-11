@@ -5,7 +5,7 @@
   "source": "lib/index.js",
   "exports": {
     "node": "./lib/index-node.js",
-    "import": "./lib/index.js"
+    "import": "./dist/index.min.js"
   },
   "types": "lib/index.d.ts",
   "files": [
