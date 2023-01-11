@@ -93,7 +93,6 @@ window.onload = async () => {
       containerSelector: "#myContainerNoFiles",
       contentSelector: "#myContentNoFiles",
       theme,
-      layout: "row",
     });
 
     (document.querySelector("#container-nofiles-btn")! as HTMLElement).onclick =
@@ -110,7 +109,6 @@ window.onload = async () => {
       fileListSelector: "#myFilesExplanation",
       contentSelector: "#myContentExplanation",
       theme,
-      layout: "row",
     });
 
     (document.querySelector("#explanation") as HTMLElement).style.visibility =

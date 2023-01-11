@@ -8,7 +8,6 @@ import style from "./style.css";
 hljsDefine(hljs);
 
 type Theme = "light" | "dark";
-type Layout = "row" | "column";
 
 export const classNames = {
   CONTAINER: "contract-verifier-container",
@@ -180,16 +179,10 @@ export const ContractVerifierUI = {
     processLevel(root).forEach((el) => filePart.appendChild(el));
   },
 
-  _populateContainer(
-    selector: string,
-    hideLineNumbers: boolean,
-    layout?: "row" | "column"
-  ) {
+  _populateContainer(selector: string, hideLineNumbers: boolean) {
     const el = document.querySelector(selector);
     el.classList.add(classNames.CONTAINER);
-    if (layout === "column") {
-      el.classList.add("column");
-    }
+
     if (!hideLineNumbers) {
       el.classList.add("lineNumbers");
     }
@@ -202,15 +195,10 @@ export const ContractVerifierUI = {
       fileListSelector?: string;
       contentSelector: string;
       theme: Theme;
-      layout?: Layout;
       hideLineNumbers?: boolean;
     }
   ) {
-    this._populateContainer(
-      opts.containerSelector,
-      !!opts.hideLineNumbers,
-      opts.layout
-    );
+    this._populateContainer(opts.containerSelector, !!opts.hideLineNumbers);
 
     if (opts.fileListSelector) {
       this._populateFiles(

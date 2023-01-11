@@ -6,7 +6,7 @@
     "node": "./lib/index.js",
     "import": "./dist/index.min.js"
   },
-  "types": "lib/index.d.ts",
+  "types": "lib/web.d.ts",
   "files": [
     "lib/**/*",
     "dist/index.min.js"

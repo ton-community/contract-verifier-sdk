@@ -3,10 +3,6 @@
   height: 100%;
 }
 
-.contract-verifier-container.column {
-  flex-direction: column;
-}
-
 .contract-verifier-code {
   text-align: left;
   overflow: auto;
@@ -43,10 +39,6 @@
 
 .contract-verifier-code pre {
   margin: 0;
-}
-
-.contract-verifier-container.column .contract-verifier-files {
-  flex-direction: row;
 }
 
 .contract-verifier-files {

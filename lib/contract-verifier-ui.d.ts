@@ -1,6 +1,5 @@
 import { SourcesData } from "./contract-verifier";
 declare type Theme = "light" | "dark";
-declare type Layout = "row" | "column";
 export declare const classNames: {
     CONTAINER: string;
     FILES: string;
@@ -27,13 +26,12 @@ export declare const ContractVerifierUI: {
         name: string;
         content: string;
     }[], theme: "dark" | "light"): void;
-    _populateContainer(selector: string, hideLineNumbers: boolean, layout?: "row" | "column"): void;
+    _populateContainer(selector: string, hideLineNumbers: boolean): void;
     loadSourcesData(sourcesData: SourcesData, opts: {
         containerSelector: string;
         fileListSelector?: string;
         contentSelector: string;
         theme: Theme;
-        layout?: Layout;
         hideLineNumbers?: boolean;
     }): void;
 };
