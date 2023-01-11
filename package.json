@@ -1,6 +1,6 @@
 {
   "name": "@ton-community/contract-verifier-sdk",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Ton contract code viewer for func with code highlighting ",
   "source": "lib/index.js",
   "main": "lib/index.js",
