@@ -22,7 +22,7 @@
     "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
-    "postversion": "git push && git push --tags",
+    "zpostversion": "git push && git push --tags",
     "zbuild": "rm -rf build lib && node build.js && tsc && cp lib/*.d.ts build",
     "zanalyze": "source-map-explorer 'build/*.js' --no-border-checks"
   },
