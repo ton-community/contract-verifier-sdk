@@ -62,7 +62,7 @@ function defaultIpfsConverter(ipfs: string) {
 }
 
 export const ContractVerifier = {
-  getSourcesJsonUrl: async function (
+  async getSourcesJsonUrl (
     codeCellHash: string,
     options?: GetSourcesOptions
   ): Promise<string | null> {
@@ -109,7 +109,7 @@ export const ContractVerifier = {
     return null;
   },
 
-  getSourcesData: async function (
+  async getSourcesData (
     sourcesJsonUrl: string,
     ipfsConverter?: IpfsUrlConverterFunc
   ): Promise<SourcesData> {
@@ -150,7 +150,7 @@ export const ContractVerifier = {
       });
 
     return {
-      files: files,
+      files,
       verificationDate: new Date(verifiedContract.verificationDate),
       compilerSettings: verifiedContract.compilerSettings,
       compiler: verifiedContract.compiler,

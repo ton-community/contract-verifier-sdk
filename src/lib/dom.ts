@@ -6,7 +6,7 @@ export const img = (props, ...children) =>
   createElement("img", props, ...children);
 
 export function appendChildren(parent, children) {
-  for (let child of children) {
+  for (const child of children) {
     if (!child) continue;
     switch (typeof child) {
       case "string":
@@ -21,7 +21,7 @@ export function appendChildren(parent, children) {
 }
 
 export function setStyle(el, style) {
-  if (typeof style == "string") {
+  if (typeof style === "string") {
     el.setAttribute("style", style);
   } else {
     Object.assign(el.style, style);
@@ -38,7 +38,7 @@ export function setClass(el, className) {
 
 export function setProps(el, props) {
   const eventRegex = /^on([a-z]+)$/i;
-  for (let propName in props) {
+  for (const propName in props) {
     if (!propName) continue;
 
     if (propName === "style") {

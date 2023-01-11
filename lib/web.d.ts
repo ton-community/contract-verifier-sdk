@@ -4,3 +4,5 @@ declare global {
     var ContractVerifier: typeof _ContractVerifier;
     var ContractVerifierUI: typeof _ContractVerifierUI;
 }
+export { ContractVerifierUI } from "./contract-verifier-ui";
+export * from "./contract-verifier";

@@ -8,3 +8,6 @@ declare global {
 
 window.ContractVerifier = _ContractVerifier;
 window.ContractVerifierUI = _ContractVerifierUI;
+
+export { ContractVerifierUI } from "./contract-verifier-ui";
+export * from "./contract-verifier";
