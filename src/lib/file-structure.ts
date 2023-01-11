@@ -5,7 +5,7 @@ import folderClosedWhite from "./res/folder-closed-white.svg";
 import folderClosedBlack from "./res/folder-closed-black.svg";
 import folderOpenWhite from "./res/folder-open-white.svg";
 import folderOpenBlack from "./res/folder-open-black.svg";
-import { classNames } from "./index";
+import { classNames } from "./contract-verifier-ui";
 
 const icons = {
   dark: {
