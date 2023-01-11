@@ -1,11 +1,11 @@
 import hljs from "highlight.js/lib/core";
-// import hljsDefine from "highlightjs-func";
+import hljsDefine from "highlightjs-func";
 import { SourcesData } from "./contract-verifier";
 import { div } from "./dom";
 import { TreeFile, TreeFolder } from "./file-structure";
 import style from "./style.css";
 
-// hljsDefine(hljs);
+hljsDefine(hljs);
 
 type Theme = "light" | "dark";
 type Layout = "row" | "column";
