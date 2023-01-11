@@ -20,12 +20,12 @@ let SVGLoader = {
   },
 };
 
-// const { nodePolyfills } = require("esbuild-plugin-polyfill-node");
+const { polyfillNode } = require("esbuild-plugin-polyfill-node");
 
 (async () => {
   await require("esbuild")
     .build({
-      plugins: [StyleLoader, SVGLoader],
+      plugins: [polyfillNode(), StyleLoader, SVGLoader],
       entryPoints: ["./src/lib/web.ts"],
       bundle: true,
       target: "es2015",

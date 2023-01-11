@@ -1,13 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
+    <script src="https://cdn.jsdelivr.net/gh/ton-community/contract-verifier-sdk@node_web_depl/dist/index.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", async function () {
+        const codeCellHash = "/rX/aCDi/w2Ug+fg1iyBfYRniftK5YDIeIZtlZ2r1cA=";
+
+        const ipfslink = await ContractVerifier.getSourcesJsonUrl(
+          codeCellHash,
+          { httpApiEndpoint: "https://scalable-api.tonwhales.com/jsonRPC" }
+        );
+
+        // means there exists a verified source for this contract
+        if (ipfslink) {
+          // By default, it's best to leave the default IPFS gateway as it has all verified source code pinned and ready
+          const sourcesData = await ContractVerifier.getSourcesData(
+            ipfslink,
+            (ipfs) =>
+              ipfs.replace("ipfs://", "https://myproj.mygateway-ipfs.io/ipfs/")
+          );
+          const theme =
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+
+          ContractVerifierUI.loadSourcesData(sourcesData, {
+            containerSelector: "#myVerifierContainer",
+            fileListSelector: "#myVerifierFiles",
+            contentSelector: "#myVerifierContent",
+            theme,
+          });
+        }
+      });
+    </script>
   </head>
   <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
+    <div id="#myVerifierContainer">
+      <div id="#myVerifierFiles"></div>
+      <div id="#myVerifierContent"></div>
+    </div>
   </body>
 </html>
