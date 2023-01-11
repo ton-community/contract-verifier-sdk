@@ -1,14 +1,23 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
-    "target": "es6",
-    "outDir": "lib",
+    // "moduleResolution": "node",
+    // "target": "es6",
+    // "outDir": "lib",
+    // "declaration": true,
+    // // "declarationDir": "lib",
+    // "sourceMap": true,
+    // "resolveJsonModule": true,
+    // "allowSyntheticDefaultImports": true,
+    // "esModuleInterop": true,
+    "target": "ES2015",
+    "module": "commonjs",
     "declaration": true,
-    "declarationDir": "lib",
+    "outDir": "./lib",
+    "strict": false,
     "sourceMap": true,
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "isolatedModules": true
   },
   "include": ["src"],
   "exclude": ["src/demo", "build", "example", "node_modules", "lib"]

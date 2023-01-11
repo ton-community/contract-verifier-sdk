@@ -2,15 +2,29 @@
   "name": "@ton-community/contract-verifier-sdk",
   "version": "0.1.0",
   "description": "Ton contract code viewer for func with code highlighting ",
+  "source": "lib/index.js",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "files": [
     "build/**/*"
   ],
   "scripts": {
     "start": "webpack-dev-server --hot",
-    "build": "rm -rf build lib && node build.js && tsc && cp lib/*.d.ts build",
     "npm-publish": "npm publish --access=public",
-    "analyze": "source-map-explorer 'build/*.js' --no-border-checks"
+    "cleanup": "rimraf ./lib",
+    "build:web:reg": "esbuild ./src/lib/web.ts --loader:.svg=text --bundle  --sourcemap --target=es2015 --outfile=./dist/index.js",
+    "build:web:min": "esbuild ./src/lib/web.ts --loader:.svg=text --bundle  --minify    --target=es2015 --outfile=./dist/index.min.js",
+    "build:web": "rimraf ./dist && npm run build:web:reg && npm run build:web:min",
+    "build": "npm run lint && rimraf ./lib && tsc && npm run build:web",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags",
+    "zbuild": "rm -rf build lib && node build.js && tsc && cp lib/*.d.ts build",
+    "zanalyze": "source-map-explorer 'build/*.js' --no-border-checks"
   },
   "repository": {
     "type": "git",
@@ -32,6 +46,7 @@
   "dependencies": {
     "@aws-crypto/sha256-js": "^2.0.2",
     "@orbs-network/ton-access": "^2.2.2",
+    "@ton-community/contract-verifier-sdk": "file:ton-community-contract-verifier-sdk-0.1.0.tgz",
     "bn.js": "^5.2.1",
     "esbuild-plugin-polyfill-node": "^0.0.2",
     "highlight.js": "^11.6.0",

@@ -60,11 +60,6 @@ export interface SourcesData {
 
 type IpfsUrlConverterFunc = (ipfsUrl: string) => string;
 
-declare global {
-  var ContractVerifier: typeof _ContractVerifier;
-  var ContractVerifierUI: typeof _ContractVerifierUI;
-}
-
 const SOURCES_REGISTRY = "EQD-BJSVUJviud_Qv7Ymfd3qzXdrmV525e3YDzWQoHIAiInL";
 
 function toSha256Buffer(s: string) {
@@ -396,5 +391,5 @@ var _ContractVerifierUI = {
   },
 };
 
-window.ContractVerifier = _ContractVerifier;
-window.ContractVerifierUI = _ContractVerifierUI;
+export const ContractVerifier = _ContractVerifier;
+export const ContractVerifierUI = _ContractVerifierUI;

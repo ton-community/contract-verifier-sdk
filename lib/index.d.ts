@@ -37,14 +37,6 @@ export interface SourcesData {
     ipfsHttpLink: string;
 }
 declare type IpfsUrlConverterFunc = (ipfsUrl: string) => string;
-declare global {
-    var ContractVerifier: typeof _ContractVerifier;
-    var ContractVerifierUI: typeof _ContractVerifierUI;
-}
-declare const _ContractVerifier: {
-    getSourcesJsonUrl: (codeCellHash: string, options?: GetSourcesOptions) => Promise<string | null>;
-    getSourcesData: (sourcesJsonUrl: string, ipfsConverter?: IpfsUrlConverterFunc) => Promise<SourcesData>;
-};
 export declare const classNames: {
     CONTAINER: string;
     FILES: string;
@@ -56,7 +48,11 @@ export declare const classNames: {
     CODE_LINES: string;
     CODE_CONTENT: string;
 };
-declare var _ContractVerifierUI: {
+export declare const ContractVerifier: {
+    getSourcesJsonUrl: (codeCellHash: string, options?: GetSourcesOptions) => Promise<string | null>;
+    getSourcesData: (sourcesJsonUrl: string, ipfsConverter?: IpfsUrlConverterFunc) => Promise<SourcesData>;
+};
+export declare const ContractVerifierUI: {
     _stylesPopulated: {
         internal: boolean;
     };
