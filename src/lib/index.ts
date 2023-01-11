@@ -40,6 +40,7 @@ export type FuncSource = {
   name: string;
   content: string;
   isEntrypoint: boolean;
+  includeInCommand: boolean;
 };
 export type TactSource = {
   name: string;
@@ -143,6 +144,7 @@ const _ContractVerifier = {
             url: string;
             filename: string;
             isEntrypoint?: boolean;
+            includeInCommand?: boolean;
             type?: "code" | "abi";
           }) => {
             const url = ipfsConverter(source.url);
@@ -151,6 +153,7 @@ const _ContractVerifier = {
               name: source.filename,
               content,
               isEntrypoint: source.isEntrypoint,
+              includeInCommand: source.includeInCommand,
               type: source.type,
             };
           }

@@ -23,6 +23,7 @@ export declare type FuncSource = {
     name: string;
     content: string;
     isEntrypoint: boolean;
+    includeInCommand: boolean;
 };
 export declare type TactSource = {
     name: string;
