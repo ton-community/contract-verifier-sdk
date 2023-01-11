@@ -9,7 +9,8 @@
   },
   "types": "lib/index.d.ts",
   "files": [
-    "lib/**/*"
+    "lib/**/*",
+    "dist/index.min.js"
   ],
   "scripts": {
     "start": "webpack-dev-server --hot",
