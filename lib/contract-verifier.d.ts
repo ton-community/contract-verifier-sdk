@@ -36,7 +36,7 @@ export interface SourcesData {
 }
 declare type IpfsUrlConverterFunc = (ipfsUrl: string) => string;
 export declare const ContractVerifier: {
-    getSourcesJsonUrl: (codeCellHash: string, options?: GetSourcesOptions) => Promise<string | null>;
-    getSourcesData: (sourcesJsonUrl: string, ipfsConverter?: IpfsUrlConverterFunc) => Promise<SourcesData>;
+    getSourcesJsonUrl(codeCellHash: string, options?: GetSourcesOptions): Promise<string | null>;
+    getSourcesData(sourcesJsonUrl: string, ipfsConverter?: IpfsUrlConverterFunc): Promise<SourcesData>;
 };
 export {};

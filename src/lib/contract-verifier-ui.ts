@@ -26,7 +26,7 @@ export const ContractVerifierUI = {
   _stylesPopulated: {
     internal: false,
   },
-  _populateStyle (theme: "dark" | "light") {
+  _populateStyle(theme: "dark" | "light") {
     if (!this._stylesPopulated[theme]) {
       this._stylesPopulated[theme] = true;
       const styleEl = document.createElement("style");
@@ -44,13 +44,13 @@ export const ContractVerifierUI = {
       document.head.appendChild(styleEl);
     }
   },
-  _populateCode (contentSelector: string, theme: "dark" | "light") {
+  _populateCode(contentSelector: string, theme: "dark" | "light") {
     const codeContainer = document.querySelector(contentSelector);
     codeContainer.classList.add(classNames.CODE_CONTAINER);
     codeContainer.innerHTML = `<pre><code class="${theme}"></code></pre>`;
   },
 
-  _setCode (
+  _setCode(
     { name, content }: { name: string; content: string },
     codeWrapperEl: HTMLElement,
     filesListEl?: HTMLElement,
@@ -89,14 +89,14 @@ export const ContractVerifierUI = {
     fileEl?.classList.add("active");
   },
 
-  setCode (contentSelector: string, content: string) {
+  setCode(contentSelector: string, content: string) {
     this._setCode(
       { name: "", content },
       document.querySelector(contentSelector)
     );
   },
 
-  _populateFiles (
+  _populateFiles(
     fileListSelector: string,
     contentSelector: string,
     files: { name: string; content: string }[],
@@ -180,7 +180,7 @@ export const ContractVerifierUI = {
     processLevel(root).forEach((el) => filePart.appendChild(el));
   },
 
-  _populateContainer (
+  _populateContainer(
     selector: string,
     hideLineNumbers: boolean,
     layout?: "row" | "column"
@@ -195,7 +195,7 @@ export const ContractVerifierUI = {
     }
   },
 
-  loadSourcesData (
+  loadSourcesData(
     sourcesData: SourcesData,
     opts: {
       containerSelector: string;

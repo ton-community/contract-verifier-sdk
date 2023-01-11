@@ -62,7 +62,7 @@ function defaultIpfsConverter(ipfs: string) {
 }
 
 export const ContractVerifier = {
-  async getSourcesJsonUrl (
+  async getSourcesJsonUrl(
     codeCellHash: string,
     options?: GetSourcesOptions
   ): Promise<string | null> {
@@ -109,7 +109,7 @@ export const ContractVerifier = {
     return null;
   },
 
-  async getSourcesData (
+  async getSourcesData(
     sourcesJsonUrl: string,
     ipfsConverter?: IpfsUrlConverterFunc
   ): Promise<SourcesData> {
