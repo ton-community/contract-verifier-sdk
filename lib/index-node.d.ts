@@ -1,1 +1,1 @@
-export { ContractVerifier } from "./contract-verifier";
+export * from "./contract-verifier";
