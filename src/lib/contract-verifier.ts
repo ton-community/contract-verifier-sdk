@@ -75,11 +75,20 @@ export const ContractVerifier = {
       Address.parse(SOURCES_REGISTRY),
       "get_source_item_address",
       [
-        [
-          "num",
-          new BN(toSha256Buffer(options?.verifier ?? "orbs.com")).toString(),
-        ],
-        ["num", new BN(Buffer.from(codeCellHash, "base64")).toString(10)],
+        {
+          type: "int",
+          value: BigInt(
+            `0x${toSha256Buffer(options?.verifier ?? "orbs.com").toString(
+              "hex"
+            )}`
+          ),
+        },
+        {
+          type: "int",
+          value: BigInt(
+            `0x${Buffer.from(codeCellHash, "base64").toString("hex")}`
+          ),
+        },
       ]
     );
 
@@ -87,7 +96,7 @@ export const ContractVerifier = {
       Buffer.from(sourceItemAddressStack[0][1].bytes, "base64")
     )[0]
       .beginParse()
-      .readAddress()!;
+      .loadAddress()!;
 
     const isDeployed = await tc.isContractDeployed(sourceItemAddr);
 
@@ -99,9 +108,9 @@ export const ContractVerifier = {
       const contentCell = Cell.fromBoc(
         Buffer.from(sourceItemDataStack[3][1].bytes, "base64")
       )[0].beginParse();
-      const version = contentCell.readUintNumber(8);
+      const version = contentCell.loadUint(8);
       if (version !== 1) throw new Error("Unsupported version");
-      const ipfsLink = contentCell.readRemainingBytes().toString();
+      const ipfsLink = contentCell.loadStringTail();
 
       return ipfsLink;
     }

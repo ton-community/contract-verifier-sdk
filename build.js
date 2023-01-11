@@ -28,7 +28,7 @@ const { polyfillNode } = require("esbuild-plugin-polyfill-node");
       plugins: [polyfillNode(), StyleLoader, SVGLoader],
       entryPoints: ["./src/lib/web.ts"],
       bundle: true,
-      target: "es2015",
+      target: "ES2020",
       outfile: "./dist/index.min.js",
       sourcemap: true,
       minify: true,
