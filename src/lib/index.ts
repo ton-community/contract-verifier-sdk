@@ -1,6 +1,6 @@
 import { Address, Cell, TonClient } from "ton";
 import { BN } from "bn.js";
-import { getHttpEndpoint } from "@orbs-network/ton-gateway";
+import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { Sha256 } from "@aws-crypto/sha256-js";
 import hljs from "highlight.js/lib/core";
 import hljsDefine from "highlightjs-func";
@@ -20,19 +20,40 @@ interface GetSourcesOptions {
   httpApiKey?: string;
 }
 
-export type FuncCompilerVersion = "0.2.0" | "0.3.0";
+export declare type FuncCompilerVersion = "0.2.0" | "0.3.0";
+export declare type TactVersion = "0.4.0";
+export declare type FiftVersion = FuncCompilerVersion; // Fift is tied to a FunC version
 
-export type FuncCompilerSettings = {
+export declare type FuncCompilerSettings = {
   funcVersion: FuncCompilerVersion;
   commandLine: string;
-  fiftVersion: string;
-  fiftlibVersion: string;
+};
+export type FiftCliCompileSettings = {
+  fiftVersion: FiftVersion;
+  commandLine: string;
+};
+export type TactCliCompileSettings = {
+  tactVersion: TactVersion;
+};
+
+export type FuncSource = {
+  name: string;
+  content: string;
+  isEntrypoint: boolean;
+};
+export type TactSource = {
+  name: string;
+  content: string;
+  type: "code" | "abi";
 };
 
 export interface SourcesData {
-  files: { name: string; content: string; isEntrypoint: boolean }[];
-  compiler: string;
-  compilerSettings: FuncCompilerSettings;
+  files: (TactSource | FuncSource)[];
+  compiler: "func" | "tact" | "fift";
+  compilerSettings:
+    | FuncCompilerSettings
+    | FiftCliCompileSettings
+    | TactCliCompileSettings;
   verificationDate: Date;
   ipfsHttpLink: string;
 }
@@ -121,7 +142,8 @@ const _ContractVerifier = {
           async (source: {
             url: string;
             filename: string;
-            isEntrypoint: boolean;
+            isEntrypoint?: boolean;
+            type?: "code" | "abi";
           }) => {
             const url = ipfsConverter(source.url);
             const content = await fetch(url).then((u) => u.text());
@@ -129,6 +151,7 @@ const _ContractVerifier = {
               name: source.filename,
               content,
               isEntrypoint: source.isEntrypoint,
+              type: source.type,
             };
           }
         )
@@ -136,6 +159,9 @@ const _ContractVerifier = {
     )
       .reverse()
       .sort((a, b) => {
+        if (a.type && b.type) {
+          return Number(b.type === "code") - Number(a.type === "code");
+        }
         return Number(b.isEntrypoint) - Number(a.isEntrypoint);
       });
 
@@ -156,8 +182,9 @@ export const classNames = {
   FOLDER: "contract-verifier-folder",
   TREE_ITEM: "contract-verifier-tree-item",
   FOLDER_CONTAINER: "contract-verifier-folder-container",
-  CONTENT: "contract-verifier-code",
-  LINES: "contract-verifier-code-lines",
+  CODE_CONTAINER: "contract-verifier-code",
+  CODE_LINES: "contract-verifier-code-lines",
+  CODE_CONTENT: "contract-verifier-code-content",
 };
 
 var _ContractVerifierUI = {
@@ -184,8 +211,8 @@ var _ContractVerifierUI = {
   },
   _populateCode: function (contentSelector: string, theme: "dark" | "light") {
     const codeContainer = document.querySelector(contentSelector);
-    codeContainer.classList.add(classNames.CONTENT);
-    codeContainer.innerHTML = `<pre><code class="language-func ${theme}"></code></pre>`;
+    codeContainer.classList.add(classNames.CODE_CONTAINER);
+    codeContainer.innerHTML = `<pre><code class="${theme}"></code></pre>`;
   },
 
   _setCode: function (
@@ -201,18 +228,24 @@ var _ContractVerifierUI = {
     codeEl.innerHTML = "";
     codeEl.appendChild(
       div(
-        { className: classNames.LINES },
+        { className: classNames.CODE_LINES },
         content
           .split("\n")
           .map((_, i) => i + 1)
           .join("\n")
       )
     );
-    codeEl.appendChild(div({}, content));
 
-    hljs.highlightElement(
-      codeEl.children[codeEl.children.length - 1] as HTMLElement
-    );
+    const contentEl = div({ className: classNames.CODE_CONTENT }, content);
+    codeEl.appendChild(contentEl);
+
+    if (name.match(/\.fif(t)?$/)) {
+      contentEl.classList.add("language-fift");
+    } else {
+      contentEl.classList.add("language-func");
+    }
+
+    hljs.highlightElement(contentEl);
 
     filesListEl
       ?.querySelector(`.${classNames.FILE}.active`)

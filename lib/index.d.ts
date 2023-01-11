@@ -6,20 +6,33 @@ interface GetSourcesOptions {
     httpApiKey?: string;
 }
 export declare type FuncCompilerVersion = "0.2.0" | "0.3.0";
+export declare type TactVersion = "0.4.0";
+export declare type FiftVersion = FuncCompilerVersion;
 export declare type FuncCompilerSettings = {
     funcVersion: FuncCompilerVersion;
     commandLine: string;
-    fiftVersion: string;
-    fiftlibVersion: string;
+};
+export declare type FiftCliCompileSettings = {
+    fiftVersion: FiftVersion;
+    commandLine: string;
+};
+export declare type TactCliCompileSettings = {
+    tactVersion: TactVersion;
+};
+export declare type FuncSource = {
+    name: string;
+    content: string;
+    isEntrypoint: boolean;
+};
+export declare type TactSource = {
+    name: string;
+    content: string;
+    type: "code" | "abi";
 };
 export interface SourcesData {
-    files: {
-        name: string;
-        content: string;
-        isEntrypoint: boolean;
-    }[];
-    compiler: string;
-    compilerSettings: FuncCompilerSettings;
+    files: (TactSource | FuncSource)[];
+    compiler: "func" | "tact" | "fift";
+    compilerSettings: FuncCompilerSettings | FiftCliCompileSettings | TactCliCompileSettings;
     verificationDate: Date;
     ipfsHttpLink: string;
 }
@@ -39,8 +52,9 @@ export declare const classNames: {
     FOLDER: string;
     TREE_ITEM: string;
     FOLDER_CONTAINER: string;
-    CONTENT: string;
-    LINES: string;
+    CODE_CONTAINER: string;
+    CODE_LINES: string;
+    CODE_CONTENT: string;
 };
 declare var _ContractVerifierUI: {
     _stylesPopulated: {
