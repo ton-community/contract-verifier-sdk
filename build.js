@@ -25,7 +25,7 @@ const { polyfillNode } = require("esbuild-plugin-polyfill-node");
 (async () => {
   await require("esbuild")
     .build({
-      plugins: [polyfillNode(), SVGLoader],
+      plugins: [polyfillNode(), StyleLoader, SVGLoader],
       entryPoints: ["./src/lib/web.ts"],
       bundle: true,
       target: "ES2020",
