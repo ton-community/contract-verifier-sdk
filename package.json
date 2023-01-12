@@ -27,7 +27,7 @@
     "sources"
   ],
   "dependencies": {
-    "@aws-crypto/sha256-js": "^2.0.2",
+    "@aws-crypto/sha256-js": "^3.0.0",
     "@orbs-network/ton-access": "^2.2.2",
     "bn.js": "^5.2.1",
     "esbuild-plugin-polyfill-node": "^0.0.2",
