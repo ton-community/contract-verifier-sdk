@@ -1,5 +1,4 @@
-import { Address, Cell, TupleReader } from "ton-core";
-import { TonClient } from "ton";
+import { TonClient, Address, Cell, TupleReader } from "ton";
 import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { Sha256 } from "@aws-crypto/sha256-js";
 
