@@ -10,6 +10,10 @@
   width: 100%;
 }
 
+.contract-verifier-code.dark {
+  background: #232222;
+}
+
 .contract-verifier-code code {
   display: flex;
   padding: 0.5em;
@@ -52,6 +56,7 @@
 
 .contract-verifier-files.dark {
   background: #28292d;
+  color: white;
 }
 
 .contract-verifier-files.light {

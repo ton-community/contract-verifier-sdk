@@ -34,6 +34,7 @@ export const ContractVerifierUI = {
           ? require("highlight.js/styles/atom-one-light.css").toString()
           : require("highlight.js/styles/atom-one-dark.css").toString()
       }`;
+
       document.head.appendChild(styleEl);
     }
     if (!this._stylesPopulated.internal) {
@@ -46,6 +47,7 @@ export const ContractVerifierUI = {
   _populateCode(contentSelector: string, theme: "dark" | "light") {
     const codeContainer = document.querySelector(contentSelector);
     codeContainer.classList.add(classNames.CODE_CONTAINER);
+    codeContainer.classList.add(theme);
     codeContainer.innerHTML = `<pre><code class="${theme}"></code></pre>`;
   },
 
