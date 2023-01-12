@@ -2,4 +2,3 @@ node_modules
 temp
 .DS_Store
 *.tgz
-example/node
