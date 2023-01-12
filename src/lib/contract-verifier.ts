@@ -1,5 +1,5 @@
-import { Address, Cell, TonClient } from "ton";
-import { BN } from "bn.js";
+import { Address, Cell, TupleReader } from "ton-core";
+import { TonClient } from "ton";
 import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { Sha256 } from "@aws-crypto/sha256-js";
 
@@ -61,6 +61,14 @@ function defaultIpfsConverter(ipfs: string) {
   return ipfs.replace("ipfs://", "https://tonsource.infura-ipfs.io/ipfs/");
 }
 
+// https://github.com/ton-community/ton-core/pull/4
+function tupleReaderSkip(t: TupleReader, num: number = 1) {
+  for (let i = 0; i < num; i++) {
+    t.pop();
+  }
+  return t;
+}
+
 export const ContractVerifier = {
   async getSourcesJsonUrl(
     codeCellHash: string,
@@ -92,11 +100,7 @@ export const ContractVerifier = {
       ]
     );
 
-    const sourceItemAddr = Cell.fromBoc(
-      Buffer.from(sourceItemAddressStack[0][1].bytes, "base64")
-    )[0]
-      .beginParse()
-      .loadAddress()!;
+    const sourceItemAddr = sourceItemAddressStack.readAddress();
 
     const isDeployed = await tc.isContractDeployed(sourceItemAddr);
 
@@ -105,9 +109,10 @@ export const ContractVerifier = {
         sourceItemAddr,
         "get_source_item_data"
       );
-      const contentCell = Cell.fromBoc(
-        Buffer.from(sourceItemDataStack[3][1].bytes, "base64")
-      )[0].beginParse();
+
+      const contentCell = tupleReaderSkip(sourceItemDataStack, 3)
+        .readCell()
+        .beginParse();
       const version = contentCell.loadUint(8);
       if (version !== 1) throw new Error("Unsupported version");
       const ipfsLink = contentCell.loadStringTail();
