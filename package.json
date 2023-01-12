@@ -19,7 +19,7 @@
     "build:web": "rimraf ./dist && npm run build:web:min",
     "build": "npm run lint && rimraf ./lib && tsc && npm run build:web",
     "format": "prettier --write \"src/**/*.ts\"",
-    "lint": "tslint -p tsconfig.json",
+    "lint": "npx tslint -p tsconfig.json",
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
