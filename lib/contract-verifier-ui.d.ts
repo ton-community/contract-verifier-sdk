@@ -1,5 +1,5 @@
 import { SourcesData } from "./contract-verifier";
-declare type Theme = "light" | "dark";
+type Theme = "light" | "dark";
 export declare const classNames: {
     CONTAINER: string;
     FILES: string;

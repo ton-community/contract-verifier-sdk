@@ -10,19 +10,19 @@ export declare type FuncCompilerSettings = {
     funcVersion: FuncCompilerVersion;
     commandLine: string;
 };
-export declare type FiftCliCompileSettings = {
+export type FiftCliCompileSettings = {
     fiftVersion: FiftVersion;
     commandLine: string;
 };
-export declare type TactCliCompileSettings = {
+export type TactCliCompileSettings = {
     tactVersion: TactVersion;
 };
-export declare type FuncSource = {
+export type FuncSource = {
     name: string;
     content: string;
     isEntrypoint: boolean;
 };
-export declare type TactSource = {
+export type TactSource = {
     name: string;
     content: string;
     type: "code" | "abi";
@@ -34,7 +34,7 @@ export interface SourcesData {
     verificationDate: Date;
     ipfsHttpLink: string;
 }
-declare type IpfsUrlConverterFunc = (ipfsUrl: string) => string;
+type IpfsUrlConverterFunc = (ipfsUrl: string) => string;
 export declare const ContractVerifier: {
     getSourcesJsonUrl(codeCellHash: string, options?: GetSourcesOptions): Promise<string | null>;
     getSourcesData(sourcesJsonUrl: string, ipfsConverter?: IpfsUrlConverterFunc): Promise<SourcesData>;
