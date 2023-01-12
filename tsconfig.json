@@ -1,21 +1,11 @@
 {
   "compilerOptions": {
-    // "moduleResolution": "node",
-    // "target": "es6",
-    // "outDir": "lib",
-    // "declaration": true,
-    // // "declarationDir": "lib",
-    // "sourceMap": true,
-    // "resolveJsonModule": true,
-    // "allowSyntheticDefaultImports": true,
-    // "esModuleInterop": true,
     "target": "ES2020",
     "module": "commonjs",
     "declaration": true,
     "outDir": "./lib",
     "strict": false,
     "sourceMap": true,
-    // "resolveJsonModule": true,
     "esModuleInterop": true,
     "isolatedModules": true
   },
