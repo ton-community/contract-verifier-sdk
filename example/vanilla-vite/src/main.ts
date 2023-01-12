@@ -51,6 +51,14 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
       </div>
     </div>
 
+    <h2>Vertical</h2>
+    <div id="myContainerVertical" style="height:500px; background-color:#282c34; width:100%; display: flex; flex-direction: column">
+      <div id="myFilesVertical" style="width: 100%">
+      </div>
+      <div id="myContentVertical">
+      </div>
+    </div>
+
   </div>
 `;
 
@@ -108,6 +116,14 @@ window.onload = async () => {
       containerSelector: "#myContainerExplanation",
       fileListSelector: "#myFilesExplanation",
       contentSelector: "#myContentExplanation",
+      theme,
+    });
+
+    // Vertical
+    ContractVerifierUI.loadSourcesData(sourcesData, {
+      containerSelector: "#myContainerVertical",
+      fileListSelector: "#myFilesVertical",
+      contentSelector: "#myContentVertical",
       theme,
     });
 
