@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
-    "target": "es6",
-    "outDir": "build",
+    "target": "ES2020",
+    "module": "commonjs",
     "declaration": true,
-    "declarationDir": "build",
+    "outDir": "./lib",
+    "strict": false,
     "sourceMap": true,
-    "resolveJsonModule": true,
-    "emitDeclarationOnly": true,
-    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "isolatedModules": true
   },
-  "exclude": ["src/demo", "build", "example"]
+  "include": ["src"],
+  "exclude": ["src/demo", "build", "example", "node_modules", "lib"]
 }

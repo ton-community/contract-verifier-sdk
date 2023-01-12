@@ -3,15 +3,15 @@
   height: 100%;
 }
 
-.contract-verifier-container.column {
-  flex-direction: column;
-}
-
 .contract-verifier-code {
   text-align: left;
   overflow: auto;
   height: 100%;
   width: 100%;
+}
+
+.contract-verifier-code.dark {
+  background: #232222;
 }
 
 .contract-verifier-code code {
@@ -45,10 +45,6 @@
   margin: 0;
 }
 
-.contract-verifier-container.column .contract-verifier-files {
-  flex-direction: row;
-}
-
 .contract-verifier-files {
   text-align: left;
   flex-shrink: 0;
@@ -60,6 +56,7 @@
 
 .contract-verifier-files.dark {
   background: #28292d;
+  color: white;
 }
 
 .contract-verifier-files.light {

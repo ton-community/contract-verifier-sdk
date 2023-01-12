@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <script src="../../dist/index.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", async function () {
+        const codeCellHash = "wkEsKlWXjwbq6g+1OwZRGGzCiJ4oLQBfIdbLeTBreIg=";
+
+        const ipfslink = await ContractVerifier.getSourcesJsonUrl(
+          codeCellHash,
+          // Will use ton access (https://github.com/orbs-network/ton-access) by default
+          // { httpApiEndpoint: "https://scalable-api.tonwhales.com/jsonRPC" }
+        );
+
+        // means there exists a verified source for this contract
+        if (ipfslink) {
+          // By default, it's best to leave the default IPFS gateway as it has all verified source code pinned and ready
+          const sourcesData = await ContractVerifier.getSourcesData(
+            ipfslink,
+            // (ipfs) =>
+            //   ipfs.replace("ipfs://", "https://myproj.mygateway-ipfs.io/ipfs/")
+          );
+         
+
+          ContractVerifierUI.loadSourcesData(sourcesData, {
+            containerSelector: "#myVerifierContainer",
+            fileListSelector: "#myVerifierFiles",
+            contentSelector: "#myVerifierContent",
+            theme: "dark"
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div id="myVerifierContainer">
+      <div id="myVerifierFiles"></div>
+      <div id="myVerifierContent"></div>
+    </div>
+  </body>
+</html>

@@ -5,7 +5,7 @@ import folderClosedWhite from "./res/folder-closed-white.svg";
 import folderClosedBlack from "./res/folder-closed-black.svg";
 import folderOpenWhite from "./res/folder-open-white.svg";
 import folderOpenBlack from "./res/folder-open-black.svg";
-import { classNames } from "./index";
+import { classNames } from "./contract-verifier-ui";
 
 const icons = {
   dark: {
@@ -41,7 +41,7 @@ function changeOpened(theme, event) {
   const folderHeader = event.target.classList.contains("folder-header")
     ? event.target
     : event.target.parentElement;
-  const opened = folderHeader.getAttribute("opened") == "true";
+  const opened = folderHeader.getAttribute("opened") === "true";
   const newOpened = !opened;
 
   folderHeader.children[0].attributes.src.value = svgToInline(
@@ -73,7 +73,7 @@ export const TreeFolder = (props, theme, ...children) => {
       {
         onClick: changeOpened.bind(this, theme),
         className: `folder-header ${classNames.FOLDER} ${classNames.TREE_ITEM}`,
-        opened: opened,
+        opened,
       },
       img({
         src: svgToInline(folderIcon),

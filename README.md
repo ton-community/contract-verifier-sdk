@@ -1,4 +1,4 @@
-# TON Contract Verifier 
+# TON Contract Verifier SDK
 
 ## TL;DR
 TON verifier data fetcher and code viewer with FunC code highlighting 
@@ -10,7 +10,7 @@ This repo is a part of the following:
 1. [contract-verifier-contracts](https://github.com/ton-community/contract-verifier-contracts) - Sources registry contracts which stores an on-chain proof per code cell hash.
 2. [contract-verifier-backend](https://github.com/ton-community/contract-verifier-backend) - Backend for compiling FunC and returning a signature over a message containing the resulting code cell hash.
 3. [contract-verifier-sdk](https://github.com/ton-community/contract-verifier-sdk) (this repo) - A UI component to fetch and display sources from TON blockchain and IPFS, including FunC code highlighting.
-4. [ton-contract-verifier](https://github.com/ton-community/contract-verifier) - A UI app to interact with the backend, contracts and publish an on-chain proof.
+4. [contract-verifier](https://github.com/ton-community/contract-verifier) - A UI app to interact with the backend, contracts and publish an on-chain proof.
 
 ## ⭐️ Features
 - Queries the Sources Registry for the existence of a Source Item contract
@@ -34,24 +34,34 @@ Add this to your HTML structure
 ### Step 2: Activate widget library
 
 #### Node
-(Coming soon)
+Install:
+```
+npm install [COMING SOON]
+```
+
+```typescript
+const ipfsLink = await ContractVerifier.getSourcesJsonUrl(
+    "45cE5NYJuT5l2bJ+HfRI0hUhR3LsBI6wER6yralqPyY="
+  );
+
+  const src = await ContractVerifier.getSourcesData(ipfsLink!);
+
+  // use contract data
+```
 
 #### Browser
 ```html
-<script src="https://cdn.jsdelivr.net/gh/shaharyakir/contract-verifier-sdk/build/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ton-community/contract-verifier-sdk@0.2.1/dist/index.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", async function () {
         const codeCellHash = "/rX/aCDi/w2Ug+fg1iyBfYRniftK5YDIeIZtlZ2r1cA=";
         
-        const ipfslink = await ContractVerifier.getSourcesJsonUrl(
-            codeCellHash,
-            { httpApiEndpoint: "https://scalable-api.tonwhales.com/jsonRPC" }
-        );
+        const ipfslink = await ContractVerifier.getSourcesJsonUrl(codeCellHash);
 
         // means there exists a verified source for this contract
         if (ipfslink) {
             // By default, it's best to leave the default IPFS gateway as it has all verified source code pinned and ready
-            const sourcesData = await ContractVerifier.getSourcesData(ipfslink, (ipfs) => ipfs.replace("ipfs://", "https://myproj.mygateway-ipfs.io/ipfs/"));
+            const sourcesData = await ContractVerifier.getSourcesData(ipfslink);
             const theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 
             ContractVerifierUI.loadSourcesData(sourcesData, {
@@ -110,7 +120,7 @@ ContractVerifierUI.setCode(contentSelector: string, content: string);
 1. Clone this repo
 2. Run `npm install`
 3. Run `npm run build`
-4. Navigate to `example/vanilla`
+4. Navigate to `example/vanilla` or `example/node`
 5. Run `npm install`
 6. Run `npm link ../../`
 7. Run `npm run dev`
