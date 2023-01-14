@@ -32,9 +32,6 @@ const { polyfillNode } = require("esbuild-plugin-polyfill-node");
       outfile: "./dist/index.min.js",
       sourcemap: true,
       minify: true,
-      supported: {
-        "regexp-lookbehind-assertions": false
-      }
     })
     .catch(() => process.exit(1));
 })();
