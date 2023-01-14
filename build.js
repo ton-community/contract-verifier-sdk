@@ -31,7 +31,10 @@ const { polyfillNode } = require("esbuild-plugin-polyfill-node");
       target: "ES2020",
       outfile: "./dist/index.min.js",
       sourcemap: true,
-      minify: false,
+      minify: true,
+      supported: {
+        "regexp-lookbehind-assertions": false
+      }
     })
     .catch(() => process.exit(1));
 })();
