@@ -8,7 +8,7 @@ interface GetSourcesOptions {
   httpApiKey?: string;
 }
 
-export declare type FuncCompilerVersion = "0.2.0" | "0.3.0";
+export declare type FuncCompilerVersion = "0.2.0" | "0.3.0" | "0.4.0";
 export declare type TactVersion = "0.4.0";
 export declare type FiftVersion = FuncCompilerVersion; // Fift is tied to a FunC version
 
