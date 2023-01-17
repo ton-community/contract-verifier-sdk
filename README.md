@@ -47,13 +47,15 @@ npm install @ton-community/contract-verifier-sdk
 
 #### Node
 ```typescript
+import { ContractVerifier } from "@ton-community/contract-verifier-sdk";
+
 const ipfsLink = await ContractVerifier.getSourcesJsonUrl(
     "45cE5NYJuT5l2bJ+HfRI0hUhR3LsBI6wER6yralqPyY="
   );
 
-  const src = await ContractVerifier.getSourcesData(ipfsLink!);
+const src = await ContractVerifier.getSourcesData(ipfsLink!);
 
-  // use contract data
+// use contract data
 ```
 
 #### Browser
