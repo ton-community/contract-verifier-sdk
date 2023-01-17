@@ -31,27 +31,35 @@ Add this to your HTML structure
 </div>
 ```
 
-### Step 2: Activate widget library
+### Installation
+
+#### NPM
+```
+npm install @ton-community/contract-verifier-sdk
+```
+
+#### Web CDN
+```
+<script src="https://cdn.jsdelivr.net/gh/ton-community/contract-verifier-sdk@0.2.2/dist/index.min.js"></script>
+```
+
+### Usage
 
 #### Node
-Install:
-```
-npm install [COMING SOON]
-```
-
 ```typescript
+import { ContractVerifier } from "@ton-community/contract-verifier-sdk";
+
 const ipfsLink = await ContractVerifier.getSourcesJsonUrl(
     "45cE5NYJuT5l2bJ+HfRI0hUhR3LsBI6wER6yralqPyY="
   );
 
-  const src = await ContractVerifier.getSourcesData(ipfsLink!);
+const src = await ContractVerifier.getSourcesData(ipfsLink!);
 
-  // use contract data
+// use contract data
 ```
 
 #### Browser
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ton-community/contract-verifier-sdk@0.2.1/dist/index.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", async function () {
         const codeCellHash = "/rX/aCDi/w2Ug+fg1iyBfYRniftK5YDIeIZtlZ2r1cA=";
