@@ -36,7 +36,7 @@ Add this to your HTML structure
 #### Node
 Install:
 ```
-npm install [COMING SOON]
+npm install @ton-community/contract-verifier-sdk
 ```
 
 ```typescript
@@ -49,9 +49,9 @@ const ipfsLink = await ContractVerifier.getSourcesJsonUrl(
   // use contract data
 ```
 
-#### Browser
+#### Browser - CDN
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ton-community/contract-verifier-sdk@0.2.1/dist/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ton-community/contract-verifier-sdk@0.2.2/dist/index.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", async function () {
         const codeCellHash = "/rX/aCDi/w2Ug+fg1iyBfYRniftK5YDIeIZtlZ2r1cA=";
