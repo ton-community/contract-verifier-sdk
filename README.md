@@ -89,8 +89,7 @@ const src = await ContractVerifier.getSourcesData(ipfsLink!);
 ```typescript
 interface GetSourcesOptions {
   verifier?: string, // Defaults to "orbs.com"
-  httpApiEndpoint?: string, // Defaults to an Orbs L3 TON Gateway
-  httpApiKey?: string
+  httpApiEndpointV4?: string, // Defaults to an Orbs L3 TON Gateway
 }
 
 // Returns an `ipfs://` prefixed URL if the given code cell hash has a corresponding source verifier contract 

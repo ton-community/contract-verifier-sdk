@@ -4,8 +4,7 @@ import { Sha256 } from "@aws-crypto/sha256-js";
 
 interface GetSourcesOptions {
   verifier?: string;
-  httpApiEndpoint?: string;
-  httpApiKey?: string;
+  httpApiEndpointV4?: string;
 }
 
 export declare type FuncCompilerVersion = "0.2.0" | "0.3.0" | "0.4.0" | "0.4.1";
@@ -72,7 +71,7 @@ export const ContractVerifier = {
     options?: GetSourcesOptions
   ): Promise<string | null> {
     const tc = new TonClient4({
-      endpoint: options?.httpApiEndpoint ?? (await getHttpV4Endpoint()),
+      endpoint: options?.httpApiEndpointV4 ?? (await getHttpV4Endpoint()),
     });
     const {
       last: { seqno },
