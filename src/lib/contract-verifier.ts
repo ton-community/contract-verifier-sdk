@@ -1,11 +1,10 @@
-import { TonClient, Address, Cell, TupleReader } from "ton";
-import { getHttpEndpoint } from "@orbs-network/ton-access";
+import { TonClient4, Address, TupleReader, TupleBuilder } from "ton";
+import { getHttpV4Endpoint } from "@orbs-network/ton-access";
 import { Sha256 } from "@aws-crypto/sha256-js";
 
 interface GetSourcesOptions {
   verifier?: string;
-  httpApiEndpoint?: string;
-  httpApiKey?: string;
+  httpApiEndpointV4?: string;
 }
 
 export declare type FuncCompilerVersion = "0.2.0" | "0.3.0" | "0.4.0" | "0.4.1";
@@ -48,7 +47,9 @@ export interface SourcesData {
 
 type IpfsUrlConverterFunc = (ipfsUrl: string) => string;
 
-const SOURCES_REGISTRY = "EQD-BJSVUJviud_Qv7Ymfd3qzXdrmV525e3YDzWQoHIAiInL";
+const SOURCES_REGISTRY = Address.parse(
+  "EQD-BJSVUJviud_Qv7Ymfd3qzXdrmV525e3YDzWQoHIAiInL"
+);
 
 function toSha256Buffer(s: string) {
   const sha = new Sha256();
@@ -60,12 +61,8 @@ function defaultIpfsConverter(ipfs: string) {
   return ipfs.replace("ipfs://", "https://tonsource.infura-ipfs.io/ipfs/");
 }
 
-// https://github.com/ton-community/ton-core/pull/4
-function tupleReaderSkip(t: TupleReader, num: number = 1) {
-  for (let i = 0; i < num; i++) {
-    t.pop();
-  }
-  return t;
+function bigIntFromBuffer(buffer: Buffer) {
+  return BigInt(`0x${buffer.toString("hex")}`);
 }
 
 export const ContractVerifier = {
@@ -73,52 +70,45 @@ export const ContractVerifier = {
     codeCellHash: string,
     options?: GetSourcesOptions
   ): Promise<string | null> {
-    const tc = new TonClient({
-      endpoint: options?.httpApiEndpoint ?? (await getHttpEndpoint()),
-      apiKey: options?.httpApiKey,
+    const tc = new TonClient4({
+      endpoint: options?.httpApiEndpointV4 ?? (await getHttpV4Endpoint()),
     });
+    const {
+      last: { seqno },
+    } = await tc.getLastBlock();
 
-    const { stack: sourceItemAddressStack } = await tc.callGetMethod(
-      Address.parse(SOURCES_REGISTRY),
+    const args = new TupleBuilder();
+    args.writeNumber(
+      bigIntFromBuffer(toSha256Buffer(options?.verifier ?? "orbs.com"))
+    );
+    args.writeNumber(bigIntFromBuffer(Buffer.from(codeCellHash, "base64")));
+    const { result: itemAddRes } = await tc.runMethod(
+      seqno,
+      SOURCES_REGISTRY,
       "get_source_item_address",
-      [
-        {
-          type: "int",
-          value: BigInt(
-            `0x${toSha256Buffer(options?.verifier ?? "orbs.com").toString(
-              "hex"
-            )}`
-          ),
-        },
-        {
-          type: "int",
-          value: BigInt(
-            `0x${Buffer.from(codeCellHash, "base64").toString("hex")}`
-          ),
-        },
-      ]
+      args.build()
     );
 
-    const sourceItemAddr = sourceItemAddressStack.readAddress();
-
-    const isDeployed = await tc.isContractDeployed(sourceItemAddr);
+    let reader = new TupleReader(itemAddRes);
+    const sourceItemAddr = reader.readAddress();
+    const acc = await tc.getAccount(seqno, sourceItemAddr);
+    const isDeployed = acc.account.state.type === "active";
 
     if (isDeployed) {
-      const { stack: sourceItemDataStack } = await tc.callGetMethod(
+      const { result: sourceItemDataRes } = await tc.runMethod(
+        seqno,
         sourceItemAddr,
         "get_source_item_data"
       );
 
-      const contentCell = tupleReaderSkip(sourceItemDataStack, 3)
-        .readCell()
-        .beginParse();
+      reader = new TupleReader(sourceItemDataRes);
+      const contentCell = reader.skip(3).readCell().beginParse();
       const version = contentCell.loadUint(8);
       if (version !== 1) throw new Error("Unsupported version");
       const ipfsLink = contentCell.loadStringTail();
 
       return ipfsLink;
     }
-
     return null;
   },
 

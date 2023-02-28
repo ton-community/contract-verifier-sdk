@@ -40,7 +40,7 @@ npm install @ton-community/contract-verifier-sdk
 
 #### Web CDN
 ```
-<script src="https://cdn.jsdelivr.net/gh/ton-community/contract-verifier-sdk@0.2.3/dist/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ton-community/contract-verifier-sdk@0.4.1/dist/index.min.js"></script>
 ```
 
 ### Usage
@@ -89,8 +89,7 @@ const src = await ContractVerifier.getSourcesData(ipfsLink!);
 ```typescript
 interface GetSourcesOptions {
   verifier?: string, // Defaults to "orbs.com"
-  httpApiEndpoint?: string, // Defaults to an Orbs L3 TON Gateway
-  httpApiKey?: string
+  httpApiEndpointV4?: string, // Defaults to an Orbs L3 TON Gateway
 }
 
 // Returns an `ipfs://` prefixed URL if the given code cell hash has a corresponding source verifier contract 
@@ -128,10 +127,22 @@ ContractVerifierUI.setCode(contentSelector: string, content: string);
 1. Clone this repo
 2. Run `npm install`
 3. Run `npm run build`
-4. Navigate to `example/vanilla` or `example/node`
-5. Run `npm install`
-6. Run `npm link ../../`
-7. Run `npm run dev`
+
+### Web - Minimal
+1. Navigate to `example/vanilla-minimal`
+4. Open `index.html`
+
+### Web - Vanilla
+1. Navigate to `example/vanilla-vite`
+2. Run `npm install`
+3. Run `npm link ../../`
+4. Run `npm run dev`
+
+### Node.js
+1. Navigate to `example/node`
+2. Run `npm install`
+3. Run `npm link ../../`
+4. Run `ts-node index.ts`
 
 ## 💎 Customization
 
