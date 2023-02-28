@@ -151,7 +151,6 @@ export const ContractVerifier = {
           }
         )
       );
-      
     } else {
       files = (
         await Promise.all(
