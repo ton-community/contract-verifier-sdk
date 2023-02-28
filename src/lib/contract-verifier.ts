@@ -1,5 +1,5 @@
-import { TonClient, Address, Cell, TupleReader } from "ton";
-import { getHttpEndpoint } from "@orbs-network/ton-access";
+import { TonClient4, Address, TupleReader, TupleItemInt } from "ton";
+import { getHttpV4Endpoint } from "@orbs-network/ton-access";
 import { Sha256 } from "@aws-crypto/sha256-js";
 
 interface GetSourcesOptions {
@@ -39,9 +39,9 @@ export interface SourcesData {
   files: (TactSource | FuncSource)[];
   compiler: "func" | "tact" | "fift";
   compilerSettings:
-    | FuncCompilerSettings
-    | FiftCliCompileSettings
-    | TactCliCompileSettings;
+  | FuncCompilerSettings
+  | FiftCliCompileSettings
+  | TactCliCompileSettings;
   verificationDate: Date;
   ipfsHttpLink: string;
 }
@@ -67,49 +67,49 @@ function tupleReaderSkip(t: TupleReader, num: number = 1) {
   }
   return t;
 }
-
+////////////////////////////////////////////////////////////
 export const ContractVerifier = {
   async getSourcesJsonUrl(
     codeCellHash: string,
     options?: GetSourcesOptions
   ): Promise<string | null> {
-    const tc = new TonClient({
-      endpoint: options?.httpApiEndpoint ?? (await getHttpEndpoint()),
-      apiKey: options?.httpApiKey,
+    const tc = new TonClient4({
+      endpoint: options?.httpApiEndpoint ?? (await getHttpV4Endpoint())
     });
+    const latestBlock = await tc.getLastBlock();
+    const seqno = latestBlock.last.seqno;
+    const address = Address.parse(SOURCES_REGISTRY);
+    const p1: TupleItemInt = {
+      type: "int",
+      value: BigInt(`0x${toSha256Buffer(options?.verifier ?? "orbs.com").toString("hex")}`)
+    };
+    const p2: TupleItemInt = {
+      type: "int",
+      value: BigInt(`0x${Buffer.from(codeCellHash, "base64").toString("hex")}`)
+    };
+    const args = [p1, p2];
 
-    const { stack: sourceItemAddressStack } = await tc.callGetMethod(
-      Address.parse(SOURCES_REGISTRY),
-      "get_source_item_address",
-      [
-        {
-          type: "int",
-          value: BigInt(
-            `0x${toSha256Buffer(options?.verifier ?? "orbs.com").toString(
-              "hex"
-            )}`
-          ),
-        },
-        {
-          type: "int",
-          value: BigInt(
-            `0x${Buffer.from(codeCellHash, "base64").toString("hex")}`
-          ),
-        },
-      ]
-    );
+    //const { stack: sourceItemAddressStack } =
+    const { result: itemAddRes } = await tc.runMethod(seqno, address, "get_source_item_address", args);
 
-    const sourceItemAddr = sourceItemAddressStack.readAddress();
+    let reader = new TupleReader(itemAddRes);
+    const sourceItemAddr = reader.readAddress();
+    const acc = await tc.getAccount(seqno, sourceItemAddr)
+    // is contract deployed
+    const isDeployed = (acc.account.state.type === 'active');
 
-    const isDeployed = await tc.isContractDeployed(sourceItemAddr);
+
 
     if (isDeployed) {
-      const { stack: sourceItemDataStack } = await tc.callGetMethod(
+      //const stackRes = await tc.runMethod(seqno, address, "get_source_item_data", args);
+      const { result: sourceItemDataRes } = await tc.runMethod(
+        seqno,
         sourceItemAddr,
         "get_source_item_data"
       );
 
-      const contentCell = tupleReaderSkip(sourceItemDataStack, 3)
+      reader = new TupleReader(sourceItemDataRes)
+      const contentCell = tupleReaderSkip(reader, 3)
         .readCell()
         .beginParse();
       const version = contentCell.loadUint(8);
@@ -118,7 +118,6 @@ export const ContractVerifier = {
 
       return ipfsLink;
     }
-
     return null;
   },
 
