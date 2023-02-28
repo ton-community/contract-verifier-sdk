@@ -1,4 +1,4 @@
-import { TonClient4, Address, TupleReader, TupleItemInt } from "ton";
+import { TonClient4, Address, TupleReader, TupleBuilder } from "ton";
 import { getHttpV4Endpoint } from "@orbs-network/ton-access";
 import { Sha256 } from "@aws-crypto/sha256-js";
 
@@ -39,16 +39,18 @@ export interface SourcesData {
   files: (TactSource | FuncSource)[];
   compiler: "func" | "tact" | "fift";
   compilerSettings:
-  | FuncCompilerSettings
-  | FiftCliCompileSettings
-  | TactCliCompileSettings;
+    | FuncCompilerSettings
+    | FiftCliCompileSettings
+    | TactCliCompileSettings;
   verificationDate: Date;
   ipfsHttpLink: string;
 }
 
 type IpfsUrlConverterFunc = (ipfsUrl: string) => string;
 
-const SOURCES_REGISTRY = "EQD-BJSVUJviud_Qv7Ymfd3qzXdrmV525e3YDzWQoHIAiInL";
+const SOURCES_REGISTRY = Address.parse(
+  "EQD-BJSVUJviud_Qv7Ymfd3qzXdrmV525e3YDzWQoHIAiInL"
+);
 
 function toSha256Buffer(s: string) {
   const sha = new Sha256();
@@ -60,58 +62,48 @@ function defaultIpfsConverter(ipfs: string) {
   return ipfs.replace("ipfs://", "https://tonsource.infura-ipfs.io/ipfs/");
 }
 
-// https://github.com/ton-community/ton-core/pull/4
-function tupleReaderSkip(t: TupleReader, num: number = 1) {
-  for (let i = 0; i < num; i++) {
-    t.pop();
-  }
-  return t;
+function bigIntFromBuffer(buffer: Buffer) {
+  return BigInt(`0x${buffer.toString("hex")}`);
 }
-////////////////////////////////////////////////////////////
+
 export const ContractVerifier = {
   async getSourcesJsonUrl(
     codeCellHash: string,
     options?: GetSourcesOptions
   ): Promise<string | null> {
     const tc = new TonClient4({
-      endpoint: options?.httpApiEndpoint ?? (await getHttpV4Endpoint())
+      endpoint: options?.httpApiEndpoint ?? (await getHttpV4Endpoint()),
     });
-    const latestBlock = await tc.getLastBlock();
-    const seqno = latestBlock.last.seqno;
-    const address = Address.parse(SOURCES_REGISTRY);
-    const p1: TupleItemInt = {
-      type: "int",
-      value: BigInt(`0x${toSha256Buffer(options?.verifier ?? "orbs.com").toString("hex")}`)
-    };
-    const p2: TupleItemInt = {
-      type: "int",
-      value: BigInt(`0x${Buffer.from(codeCellHash, "base64").toString("hex")}`)
-    };
-    const args = [p1, p2];
+    const {
+      last: { seqno },
+    } = await tc.getLastBlock();
 
-    //const { stack: sourceItemAddressStack } =
-    const { result: itemAddRes } = await tc.runMethod(seqno, address, "get_source_item_address", args);
+    const args = new TupleBuilder();
+    args.writeNumber(
+      bigIntFromBuffer(toSha256Buffer(options?.verifier ?? "orbs.com"))
+    );
+    args.writeNumber(bigIntFromBuffer(Buffer.from(codeCellHash, "base64")));
+    const { result: itemAddRes } = await tc.runMethod(
+      seqno,
+      SOURCES_REGISTRY,
+      "get_source_item_address",
+      args.build()
+    );
 
     let reader = new TupleReader(itemAddRes);
     const sourceItemAddr = reader.readAddress();
-    const acc = await tc.getAccount(seqno, sourceItemAddr)
-    // is contract deployed
-    const isDeployed = (acc.account.state.type === 'active');
-
-
+    const acc = await tc.getAccount(seqno, sourceItemAddr);
+    const isDeployed = acc.account.state.type === "active";
 
     if (isDeployed) {
-      //const stackRes = await tc.runMethod(seqno, address, "get_source_item_data", args);
       const { result: sourceItemDataRes } = await tc.runMethod(
         seqno,
         sourceItemAddr,
         "get_source_item_data"
       );
 
-      reader = new TupleReader(sourceItemDataRes)
-      const contentCell = tupleReaderSkip(reader, 3)
-        .readCell()
-        .beginParse();
+      reader = new TupleReader(sourceItemDataRes);
+      const contentCell = reader.skip(3).readCell().beginParse();
       const version = contentCell.loadUint(8);
       if (version !== 1) throw new Error("Unsupported version");
       const ipfsLink = contentCell.loadStringTail();

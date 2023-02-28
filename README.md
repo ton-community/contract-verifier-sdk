@@ -128,10 +128,22 @@ ContractVerifierUI.setCode(contentSelector: string, content: string);
 1. Clone this repo
 2. Run `npm install`
 3. Run `npm run build`
-4. Navigate to `example/vanilla` or `example/node`
-5. Run `npm install`
-6. Run `npm link ../../`
-7. Run `npm run dev`
+
+### Web - Minimal
+1. Navigate to `example/vanilla-minimal`
+4. Open `index.html`
+
+### Web - Vanilla
+1. Navigate to `example/vanilla-vite`
+2. Run `npm install`
+3. Run `npm link ../../`
+4. Run `npm run dev`
+
+### Node.js
+1. Navigate to `example/node`
+2. Run `npm install`
+3. Run `npm link ../../`
+4. Run `ts-node index.ts`
 
 ## 💎 Customization
 
