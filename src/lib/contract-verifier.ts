@@ -124,61 +124,32 @@ export const ContractVerifier = {
 
     let files = [];
 
-    if (verifiedContract.compiler === "tact") {
-      const pkg = JSON.parse(
-        await fetch(ipfsConverter(verifiedContract.sources[0].url)).then((u) =>
-          u.text()
-        )
-      );
-
-      files.push({
-        name: pkg.name + ".abi",
-        content: JSON.stringify(JSON.parse(pkg.abi), null, 3),
-      });
-
-      files.push({
-        name: pkg.name + ".pkg",
-        content: JSON.stringify(pkg, null, 3),
-      });
-
-      files.push(
-        ...Object.entries(pkg.sources).map(
-          ([fileName, content]: [string, string]) => {
+    files = (
+      await Promise.all(
+        verifiedContract.sources.map(
+          async (source: {
+            url: string;
+            filename: string;
+            isEntrypoint?: boolean;
+          }) => {
+            const url = ipfsConverter(source.url);
+            const content = await fetch(url).then((u) => u.text());
             return {
-              name: fileName,
-              content: Buffer.from(content, "base64").toString("utf-8"),
+              name: source.filename,
+              content,
+              isEntrypoint: source.isEntrypoint,
             };
           }
         )
-      );
-    } else {
-      files = (
-        await Promise.all(
-          verifiedContract.sources.map(
-            async (source: {
-              url: string;
-              filename: string;
-              isEntrypoint?: boolean;
-            }) => {
-              const url = ipfsConverter(source.url);
-              const content = await fetch(url).then((u) => u.text());
-              return {
-                name: source.filename,
-                content,
-                isEntrypoint: source.isEntrypoint,
-              };
-            }
-          )
-        )
       )
-        .reverse()
-        .sort((a, b) => {
-          // if (a.type && b.type) {
-          //   return Number(b.type === "code") - Number(a.type === "code");
-          // }
-          return Number(b.isEntrypoint) - Number(a.isEntrypoint);
-        });
-    }
+    )
+      .reverse()
+      .sort((a, b) => {
+        // if (a.type && b.type) {
+        //   return Number(b.type === "code") - Number(a.type === "code");
+        // }
+        return Number(b.isEntrypoint) - Number(a.isEntrypoint);
+      });
 
     return {
       files,
