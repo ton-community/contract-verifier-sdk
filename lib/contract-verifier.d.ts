@@ -3,7 +3,7 @@ interface GetSourcesOptions {
     httpApiEndpointV4?: string;
 }
 export declare type FuncCompilerVersion = "0.2.0" | "0.3.0" | "0.4.0" | "0.4.1";
-export declare type TactVersion = "0.4.0";
+export declare type TactVersion = string;
 export declare type FiftVersion = FuncCompilerVersion;
 export declare type FuncCompilerSettings = {
     funcVersion: FuncCompilerVersion;
@@ -24,7 +24,6 @@ export type FuncSource = {
 export type TactSource = {
     name: string;
     content: string;
-    type: "code" | "abi";
 };
 export interface SourcesData {
     files: (TactSource | FuncSource)[];

@@ -8,7 +8,7 @@ interface GetSourcesOptions {
 }
 
 export declare type FuncCompilerVersion = "0.2.0" | "0.3.0" | "0.4.0" | "0.4.1";
-export declare type TactVersion = "0.4.0";
+export declare type TactVersion = string;
 export declare type FiftVersion = FuncCompilerVersion; // Fift is tied to a FunC version
 
 export declare type FuncCompilerSettings = {
@@ -31,7 +31,6 @@ export type FuncSource = {
 export type TactSource = {
   name: string;
   content: string;
-  type: "code" | "abi";
 };
 
 export interface SourcesData {
@@ -130,7 +129,6 @@ export const ContractVerifier = {
             url: string;
             filename: string;
             isEntrypoint?: boolean;
-            type?: "code" | "abi";
           }) => {
             const url = ipfsConverter(source.url);
             const content = await fetch(url).then((u) => u.text());
@@ -138,7 +136,6 @@ export const ContractVerifier = {
               name: source.filename,
               content,
               isEntrypoint: source.isEntrypoint,
-              type: source.type,
             };
           }
         )
@@ -146,9 +143,6 @@ export const ContractVerifier = {
     )
       .reverse()
       .sort((a, b) => {
-        if (a.type && b.type) {
-          return Number(b.type === "code") - Number(a.type === "code");
-        }
         return Number(b.isEntrypoint) - Number(a.isEntrypoint);
       });
 
