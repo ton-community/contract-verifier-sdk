@@ -122,9 +122,7 @@ export const ContractVerifier = {
       await fetch(ipfsConverter(sourcesJsonUrl))
     ).json();
 
-    let files = [];
-
-    files = (
+    const files = (
       await Promise.all(
         verifiedContract.sources.map(
           async (source: {
@@ -145,9 +143,6 @@ export const ContractVerifier = {
     )
       .reverse()
       .sort((a, b) => {
-        // if (a.type && b.type) {
-        //   return Number(b.type === "code") - Number(a.type === "code");
-        // }
         return Number(b.isEntrypoint) - Number(a.isEntrypoint);
       });
 
