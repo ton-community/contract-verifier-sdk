@@ -37,9 +37,9 @@ export interface SourcesData {
   files: (TactSource | FuncSource)[];
   compiler: "func" | "tact" | "fift";
   compilerSettings:
-    | FuncCompilerSettings
-    | FiftCliCompileSettings
-    | TactCliCompileSettings;
+  | FuncCompilerSettings
+  | FiftCliCompileSettings
+  | TactCliCompileSettings;
   verificationDate: Date;
   ipfsHttpLink: string;
 }
@@ -90,8 +90,7 @@ export const ContractVerifier = {
 
     let reader = new TupleReader(itemAddRes);
     const sourceItemAddr = reader.readAddress();
-    const acc = await tc.getAccount(seqno, sourceItemAddr);
-    const isDeployed = acc.account.state.type === "active";
+    const isDeployed = await tc.isContractDeployed(seqno, sourceItemAddr);
 
     if (isDeployed) {
       const { result: sourceItemDataRes } = await tc.runMethod(
