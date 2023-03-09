@@ -53,6 +53,7 @@
     "ton-core": "^0.48.0"
   },
   "devDependencies": {
+    "@release-it/keep-a-changelog": "^3.1.0",
     "@types/node": "^18.11.18",
     "esbuild": "^0.16.16",
     "esbuild-plugin-polyfill-node": "^0.1.3",
