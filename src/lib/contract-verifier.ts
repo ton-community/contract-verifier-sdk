@@ -50,6 +50,9 @@ type IpfsUrlConverterFunc = (ipfsUrl: string, testnet: boolean) => string;
 const SOURCES_REGISTRY = Address.parse(
   "EQD-BJSVUJviud_Qv7Ymfd3qzXdrmV525e3YDzWQoHIAiInL"
 );
+const SOURCES_REGISTRY_TESTNET = Address.parse(
+  "EQCsdKYwUaXkgJkz2l0ol6qT_WxeRbE_wBCwnEybmR0u5TO8"
+);
 
 function toSha256Buffer(s: string) {
   const sha = new Sha256();
@@ -91,7 +94,7 @@ export const ContractVerifier = {
     args.writeNumber(bigIntFromBuffer(Buffer.from(codeCellHash, "base64")));
     const { result: itemAddRes } = await tc.runMethod(
       seqno,
-      SOURCES_REGISTRY,
+      options.testnet ? SOURCES_REGISTRY_TESTNET : SOURCES_REGISTRY,
       "get_source_item_address",
       args.build()
     );
