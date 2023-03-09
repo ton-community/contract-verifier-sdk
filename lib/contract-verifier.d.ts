@@ -1,6 +1,7 @@
 interface GetSourcesOptions {
     verifier?: string;
     httpApiEndpointV4?: string;
+    testnet?: boolean;
 }
 export declare type FuncCompilerVersion = "0.2.0" | "0.3.0" | "0.4.0" | "0.4.1";
 export declare type TactVersion = string;
@@ -32,9 +33,12 @@ export interface SourcesData {
     verificationDate: Date;
     ipfsHttpLink: string;
 }
-type IpfsUrlConverterFunc = (ipfsUrl: string) => string;
+type IpfsUrlConverterFunc = (ipfsUrl: string, testnet: boolean) => string;
 export declare const ContractVerifier: {
     getSourcesJsonUrl(codeCellHash: string, options?: GetSourcesOptions): Promise<string | null>;
-    getSourcesData(sourcesJsonUrl: string, ipfsConverter?: IpfsUrlConverterFunc): Promise<SourcesData>;
+    getSourcesData(sourcesJsonUrl: string, options?: {
+        ipfsConverter?: IpfsUrlConverterFunc;
+        testnet?: boolean;
+    }): Promise<SourcesData>;
 };
 export {};
