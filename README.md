@@ -40,7 +40,7 @@ npm install @ton-community/contract-verifier-sdk
 
 #### Web CDN
 ```
-<script src="https://cdn.jsdelivr.net/gh/ton-community/contract-verifier-sdk@0.4.1/dist/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ton-community/contract-verifier-sdk@1.1.0/dist/index.min.js"></script>
 ```
 
 ### Usage
@@ -50,10 +50,13 @@ npm install @ton-community/contract-verifier-sdk
 import { ContractVerifier } from "@ton-community/contract-verifier-sdk";
 
 const ipfsLink = await ContractVerifier.getSourcesJsonUrl(
-    "45cE5NYJuT5l2bJ+HfRI0hUhR3LsBI6wER6yralqPyY="
+    "45cE5NYJuT5l2bJ+HfRI0hUhR3LsBI6wER6yralqPyY=",
+    {
+        testnet: false
+    }
   );
 
-const src = await ContractVerifier.getSourcesData(ipfsLink!);
+const src = await ContractVerifier.getSourcesData(ipfsLink!, {testnet: false});
 
 // use contract data
 ```
@@ -90,6 +93,7 @@ const src = await ContractVerifier.getSourcesData(ipfsLink!);
 interface GetSourcesOptions {
   verifier?: string, // Defaults to "orbs.com"
   httpApiEndpointV4?: string, // Defaults to an Orbs L3 TON Gateway
+  testnet?: boolean
 }
 
 // Returns an `ipfs://` prefixed URL if the given code cell hash has a corresponding source verifier contract 
@@ -106,7 +110,10 @@ interface SourcesData {
 type IpfsUrlConverterFunc (ipfsUrl: string) => string;
 
 // Returns file names and their source code content
-async ContractVerifier.getSourcesData(sourcesJsonUrl: string | null, ipfsConverter?: IpfsUrlConverterFunc): Promise<SourcesData>;
+async ContractVerifier.getSourcesData(sourcesJsonUrl: string, options?: {
+    ipfsConverter?: IpfsUrlConverterFunc;
+    testnet?: boolean;
+}): Promise<SourcesData>;
 ```
 
 ### ContractVerifierUI

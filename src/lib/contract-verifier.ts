@@ -5,6 +5,7 @@ import { Sha256 } from "@aws-crypto/sha256-js";
 interface GetSourcesOptions {
   verifier?: string;
   httpApiEndpointV4?: string;
+  testnet?: boolean;
 }
 
 export declare type FuncCompilerVersion = "0.2.0" | "0.3.0" | "0.4.0" | "0.4.1";
@@ -37,17 +38,20 @@ export interface SourcesData {
   files: (TactSource | FuncSource)[];
   compiler: "func" | "tact" | "fift";
   compilerSettings:
-  | FuncCompilerSettings
-  | FiftCliCompileSettings
-  | TactCliCompileSettings;
+    | FuncCompilerSettings
+    | FiftCliCompileSettings
+    | TactCliCompileSettings;
   verificationDate: Date;
   ipfsHttpLink: string;
 }
 
-type IpfsUrlConverterFunc = (ipfsUrl: string) => string;
+type IpfsUrlConverterFunc = (ipfsUrl: string, testnet: boolean) => string;
 
 const SOURCES_REGISTRY = Address.parse(
   "EQD-BJSVUJviud_Qv7Ymfd3qzXdrmV525e3YDzWQoHIAiInL"
+);
+const SOURCES_REGISTRY_TESTNET = Address.parse(
+  "EQCsdKYwUaXkgJkz2l0ol6qT_WxeRbE_wBCwnEybmR0u5TO8"
 );
 
 function toSha256Buffer(s: string) {
@@ -56,8 +60,11 @@ function toSha256Buffer(s: string) {
   return Buffer.from(sha.digestSync());
 }
 
-function defaultIpfsConverter(ipfs: string) {
-  return ipfs.replace("ipfs://", "https://tonsource.infura-ipfs.io/ipfs/");
+function defaultIpfsConverter(ipfs: string, testnet: boolean) {
+  return ipfs.replace(
+    "ipfs://",
+    `https://tonsource${testnet ? "-testnet" : ""}.infura-ipfs.io/ipfs/`
+  );
 }
 
 function bigIntFromBuffer(buffer: Buffer) {
@@ -70,7 +77,11 @@ export const ContractVerifier = {
     options?: GetSourcesOptions
   ): Promise<string | null> {
     const tc = new TonClient4({
-      endpoint: options?.httpApiEndpointV4 ?? (await getHttpV4Endpoint()),
+      endpoint:
+        options?.httpApiEndpointV4 ??
+        (await getHttpV4Endpoint({
+          network: options.testnet ? "testnet" : "mainnet",
+        })),
     });
     const {
       last: { seqno },
@@ -83,7 +94,7 @@ export const ContractVerifier = {
     args.writeNumber(bigIntFromBuffer(Buffer.from(codeCellHash, "base64")));
     const { result: itemAddRes } = await tc.runMethod(
       seqno,
-      SOURCES_REGISTRY,
+      options.testnet ? SOURCES_REGISTRY_TESTNET : SOURCES_REGISTRY,
       "get_source_item_address",
       args.build()
     );
@@ -112,13 +123,16 @@ export const ContractVerifier = {
 
   async getSourcesData(
     sourcesJsonUrl: string,
-    ipfsConverter?: IpfsUrlConverterFunc
+    options?: {
+      ipfsConverter?: IpfsUrlConverterFunc;
+      testnet?: boolean;
+    }
   ): Promise<SourcesData> {
-    ipfsConverter = ipfsConverter ?? defaultIpfsConverter;
-    const ipfsHttpLink = ipfsConverter(sourcesJsonUrl);
+    const ipfsConverter = options.ipfsConverter ?? defaultIpfsConverter;
+    const ipfsHttpLink = ipfsConverter(sourcesJsonUrl, !!options.testnet);
 
     const verifiedContract = await (
-      await fetch(ipfsConverter(sourcesJsonUrl))
+      await fetch(ipfsConverter(sourcesJsonUrl, !!options.testnet))
     ).json();
 
     const files = (
@@ -129,7 +143,7 @@ export const ContractVerifier = {
             filename: string;
             isEntrypoint?: boolean;
           }) => {
-            const url = ipfsConverter(source.url);
+            const url = ipfsConverter(source.url, !!options.testnet);
             const content = await fetch(url).then((u) => u.text());
             return {
               name: source.filename,
