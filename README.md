@@ -40,7 +40,7 @@ npm install @ton-community/contract-verifier-sdk
 
 #### Web CDN
 ```
-<script src="https://cdn.jsdelivr.net/gh/ton-community/contract-verifier-sdk@0.4.1/dist/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ton-community/contract-verifier-sdk@1.1.0/dist/index.min.js"></script>
 ```
 
 ### Usage
