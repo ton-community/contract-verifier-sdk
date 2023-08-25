@@ -49,7 +49,7 @@
     "highlight.js": "11.6.0",
     "highlightjs-func": "github:orbs-network/highlightjs-func",
     "ton": "^13.4.1",
-    "ton-core": "^0.48.0"
+    "ton-core": "^0.52.0"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",
