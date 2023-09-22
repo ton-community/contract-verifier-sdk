@@ -44,7 +44,7 @@
     "sources"
   ],
   "dependencies": {
-    "@aws-crypto/sha256-js": "^2.0.2",
+    "@aws-crypto/sha256-js": "^5.1.0",
     "@orbs-network/ton-access": "^2.3.0",
     "highlight.js": "11.6.0",
     "highlightjs-func": "github:orbs-network/highlightjs-func",
