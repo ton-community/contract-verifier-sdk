@@ -76,11 +76,12 @@ export const ContractVerifier = {
     codeCellHash: string,
     options?: GetSourcesOptions
   ): Promise<string | null> {
+    const isTestnet = options?.testnet ?? false; // Mainnet by default
     const tc = new TonClient4({
       endpoint:
         options?.httpApiEndpointV4 ??
         (await getHttpV4Endpoint({
-          network: options.testnet ? "testnet" : "mainnet",
+          network: isTestnet ? "testnet" : "mainnet",
         })),
     });
     const {
@@ -94,7 +95,7 @@ export const ContractVerifier = {
     args.writeNumber(bigIntFromBuffer(Buffer.from(codeCellHash, "base64")));
     const { result: itemAddRes } = await tc.runMethod(
       seqno,
-      options.testnet ? SOURCES_REGISTRY_TESTNET : SOURCES_REGISTRY,
+      isTestnet ? SOURCES_REGISTRY_TESTNET : SOURCES_REGISTRY,
       "get_source_item_address",
       args.build()
     );
@@ -128,11 +129,13 @@ export const ContractVerifier = {
       testnet?: boolean;
     }
   ): Promise<SourcesData> {
-    const ipfsConverter = options.ipfsConverter ?? defaultIpfsConverter;
-    const ipfsHttpLink = ipfsConverter(sourcesJsonUrl, !!options.testnet);
+
+    const isTestnet = options?.testnet ?? false; // Mainnet by default
+    const ipfsConverter = options?.ipfsConverter ?? defaultIpfsConverter;
+    const ipfsHttpLink = ipfsConverter(sourcesJsonUrl, isTestnet);
 
     const verifiedContract = await (
-      await fetch(ipfsConverter(sourcesJsonUrl, !!options.testnet))
+      await fetch(ipfsConverter(sourcesJsonUrl, isTestnet))
     ).json();
 
     const files = (
@@ -143,7 +146,7 @@ export const ContractVerifier = {
             filename: string;
             isEntrypoint?: boolean;
           }) => {
-            const url = ipfsConverter(source.url, !!options.testnet);
+            const url = ipfsConverter(source.url, isTestnet);
             const content = await fetch(url).then((u) => u.text());
             return {
               name: source.filename,
