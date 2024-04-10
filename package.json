@@ -8,7 +8,7 @@
   },
   "types": "lib/web.d.ts",
   "files": [
-    "lib/**/*",
+    "lib/**/**",
     "dist/index.min.js"
   ],
   "scripts": {
