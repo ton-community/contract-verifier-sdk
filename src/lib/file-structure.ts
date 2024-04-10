@@ -33,7 +33,7 @@ export const TreeFile = ({ name }, theme) => {
     img({
       src: svgToInline(icons[theme].file),
     }),
-    div(null, name)
+    div(null, name),
   );
 };
 
@@ -45,7 +45,7 @@ function changeOpened(theme, event) {
   const newOpened = !opened;
 
   folderHeader.children[0].attributes.src.value = svgToInline(
-    newOpened ? icons[theme].folder.open : icons[theme].folder.closed
+    newOpened ? icons[theme].folder.open : icons[theme].folder.closed,
   );
 
   try {
@@ -78,8 +78,8 @@ export const TreeFolder = (props, theme, ...children) => {
       img({
         src: svgToInline(folderIcon),
       }),
-      div(null, folderName)
+      div(null, folderName),
     ),
-    div({ className: `${opened ? "" : "hide"} folder-content` }, ...children)
+    div({ className: `${opened ? "" : "hide"} folder-content` }, ...children),
   );
 };

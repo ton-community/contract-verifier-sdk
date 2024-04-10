@@ -55,7 +55,7 @@ export const ContractVerifierUI = {
     { name, content }: { name: string; content: string },
     codeWrapperEl: HTMLElement,
     filesListEl?: HTMLElement,
-    fileEl?: HTMLElement
+    fileEl?: HTMLElement,
   ) {
     if (fileEl?.classList.contains("active")) return;
     codeWrapperEl.scrollTo(0, 0);
@@ -68,8 +68,8 @@ export const ContractVerifierUI = {
         content
           .split("\n")
           .map((_, i) => i + 1)
-          .join("\n")
-      )
+          .join("\n"),
+      ),
     );
 
     const contentEl = div({ className: classNames.CODE_CONTENT }, content);
@@ -93,7 +93,7 @@ export const ContractVerifierUI = {
   setCode(contentSelector: string, content: string) {
     this._setCode(
       { name: "", content },
-      document.querySelector(contentSelector)
+      document.querySelector(contentSelector),
     );
   },
 
@@ -101,7 +101,7 @@ export const ContractVerifierUI = {
     fileListSelector: string,
     contentSelector: string,
     files: { name: string; content: string }[],
-    theme: "dark" | "light"
+    theme: "dark" | "light",
   ) {
     const filePart = document.querySelector(fileListSelector);
     filePart.innerHTML = "";
@@ -116,7 +116,7 @@ export const ContractVerifierUI = {
 
     files.forEach((file) => {
       const nameParts = Array.from(
-        file.name.matchAll(/(?:\/|^)([^\/\n]+)/g)
+        file.name.matchAll(/(?:\/|^)([^\/\n]+)/g),
       ).map((m) => m[1]);
 
       const folders =
@@ -126,7 +126,7 @@ export const ContractVerifierUI = {
 
       folders.forEach((folder) => {
         let existingFolder = levelToPushTo.children.find(
-          (obj) => obj.type === "folder" && obj.name === folder
+          (obj) => obj.type === "folder" && obj.name === folder,
         );
 
         if (!existingFolder) {
@@ -160,7 +160,7 @@ export const ContractVerifierUI = {
               { name: child.name, content: child.content },
               document.querySelector(contentSelector),
               document.querySelector(fileListSelector),
-              file
+              file,
             );
           };
           return file;
@@ -172,9 +172,9 @@ export const ContractVerifierUI = {
               TreeFolder(
                 { name: child.name, opened: true },
                 theme,
-                ...processLevel(child)
-              )
-            )
+                ...processLevel(child),
+              ),
+            ),
         );
     }
 
@@ -198,7 +198,7 @@ export const ContractVerifierUI = {
       contentSelector: string;
       theme: Theme;
       hideLineNumbers?: boolean;
-    }
+    },
   ) {
     this._populateContainer(opts.containerSelector, !!opts.hideLineNumbers);
 
@@ -207,7 +207,7 @@ export const ContractVerifierUI = {
         opts.fileListSelector,
         opts.contentSelector,
         sourcesData.files,
-        opts.theme
+        opts.theme,
       );
     }
     this._populateStyle(opts.theme);
@@ -216,7 +216,9 @@ export const ContractVerifierUI = {
       sourcesData.files[0],
       document.querySelector(opts.contentSelector),
       document.querySelector(opts.fileListSelector),
-      document.querySelector(`${opts.fileListSelector} .contract-verifier-file`) // Get first file
+      document.querySelector(
+        `${opts.fileListSelector} .contract-verifier-file`,
+      ), // Get first file
     );
   },
 };

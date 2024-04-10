@@ -48,10 +48,10 @@ export interface SourcesData {
 type IpfsUrlConverterFunc = (ipfsUrl: string, testnet: boolean) => string;
 
 const SOURCES_REGISTRY = Address.parse(
-  "EQD-BJSVUJviud_Qv7Ymfd3qzXdrmV525e3YDzWQoHIAiInL"
+  "EQD-BJSVUJviud_Qv7Ymfd3qzXdrmV525e3YDzWQoHIAiInL",
 );
 const SOURCES_REGISTRY_TESTNET = Address.parse(
-  "EQCsdKYwUaXkgJkz2l0ol6qT_WxeRbE_wBCwnEybmR0u5TO8"
+  "EQCsdKYwUaXkgJkz2l0ol6qT_WxeRbE_wBCwnEybmR0u5TO8",
 );
 
 function toSha256Buffer(s: string) {
@@ -61,7 +61,6 @@ function toSha256Buffer(s: string) {
 }
 
 function defaultIpfsConverter(ipfs: string, testnet: boolean) {
-
   let endpoint: string;
 
   if (testnet) {
@@ -70,10 +69,7 @@ function defaultIpfsConverter(ipfs: string, testnet: boolean) {
     endpoint = "https://files.orbs.network/ipfs/";
   }
 
-  return ipfs.replace(
-    "ipfs://",
-    endpoint
-  );
+  return ipfs.replace("ipfs://", endpoint);
 }
 
 function bigIntFromBuffer(buffer: Buffer) {
@@ -83,7 +79,7 @@ function bigIntFromBuffer(buffer: Buffer) {
 export const ContractVerifier = {
   async getSourcesJsonUrl(
     codeCellHash: string,
-    options?: GetSourcesOptions
+    options?: GetSourcesOptions,
   ): Promise<string | null> {
     const tc = new TonClient4({
       endpoint:
@@ -98,14 +94,14 @@ export const ContractVerifier = {
 
     const args = new TupleBuilder();
     args.writeNumber(
-      bigIntFromBuffer(toSha256Buffer(options?.verifier ?? "orbs.com"))
+      bigIntFromBuffer(toSha256Buffer(options?.verifier ?? "orbs.com")),
     );
     args.writeNumber(bigIntFromBuffer(Buffer.from(codeCellHash, "base64")));
     const { result: itemAddRes } = await tc.runMethod(
       seqno,
       options.testnet ? SOURCES_REGISTRY_TESTNET : SOURCES_REGISTRY,
       "get_source_item_address",
-      args.build()
+      args.build(),
     );
 
     let reader = new TupleReader(itemAddRes);
@@ -116,7 +112,7 @@ export const ContractVerifier = {
       const { result: sourceItemDataRes } = await tc.runMethod(
         seqno,
         sourceItemAddr,
-        "get_source_item_data"
+        "get_source_item_data",
       );
 
       reader = new TupleReader(sourceItemDataRes);
@@ -135,7 +131,7 @@ export const ContractVerifier = {
     options?: {
       ipfsConverter?: IpfsUrlConverterFunc;
       testnet?: boolean;
-    }
+    },
   ): Promise<SourcesData> {
     const ipfsConverter = options.ipfsConverter ?? defaultIpfsConverter;
     const ipfsHttpLink = ipfsConverter(sourcesJsonUrl, !!options.testnet);
@@ -159,8 +155,8 @@ export const ContractVerifier = {
               content,
               isEntrypoint: source.isEntrypoint,
             };
-          }
-        )
+          },
+        ),
       )
     )
       .reverse()
