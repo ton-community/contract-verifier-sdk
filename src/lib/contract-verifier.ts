@@ -61,9 +61,18 @@ function toSha256Buffer(s: string) {
 }
 
 function defaultIpfsConverter(ipfs: string, testnet: boolean) {
+
+  let endpoint: string;
+
+  if (testnet) {
+    endpoint = "https://tonsource-testnet.infura-ipfs.io/ipfs/";
+  } else {
+    endpoint = "https://files.orbs.network/ipfs/";
+  }
+
   return ipfs.replace(
     "ipfs://",
-    `https://tonsource${testnet ? "-testnet" : ""}.infura-ipfs.io/ipfs/`
+    endpoint
   );
 }
 
