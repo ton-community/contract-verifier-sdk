@@ -54,7 +54,7 @@
     "ton-core": "^0.48.0"
   },
   "devDependencies": {
-    "@types/node": "^18.11.18",
+    "@types/node": "^22.8.2",
     "esbuild": "^0.16.16",
     "esbuild-plugin-polyfill-node": "^0.1.3",
     "eslint": "^8.31.0",
