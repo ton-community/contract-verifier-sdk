@@ -50,7 +50,7 @@
     "highlightjs-func": "github:orbs-network/highlightjs-func",
     "husky": "^9.0.11",
     "prettier": "^3.2.5",
-    "ton": "^13.4.1",
+    "ton": "^13.9.0",
     "ton-core": "^0.48.0"
   },
   "devDependencies": {
