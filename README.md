@@ -10,7 +10,18 @@ This repo is a part of the following:
 1. [contract-verifier-contracts](https://github.com/ton-community/contract-verifier-contracts) - Sources registry contracts which stores an on-chain proof per code cell hash.
 2. [contract-verifier-backend](https://github.com/ton-community/contract-verifier-backend) - Backend for compiling FunC and returning a signature over a message containing the resulting code cell hash.
 3. [contract-verifier-sdk](https://github.com/ton-community/contract-verifier-sdk) (this repo) - A UI component to fetch and display sources from TON blockchain and IPFS, including FunC code highlighting.
-4. [contract-verifier](https://github.com/ton-community/contract-verifier) - A UI app to interact with the backend, contracts and publish an on-chain proof.
+4. [contract-verifier](https://github.com/ton-import { ContractVerifier } from "@ton-community/contract-verifier-sdk";
+
+const ipfsLink = await ContractVerifier.getSourcesJsonUrl(
+    "45cE5NYJuT5l2bJ+HfRI0hUhR3LsBI6wER6yralqPyY=",
+    {
+        testnet: false
+    }
+  );
+
+const src = await ContractVerifier.getSourcesData(ipfsLink!, {testnet: false});
+
+// use contract datacommunity/contract-verifier) - A UI app to interact with the backend, contracts and publish an on-chain proof.
 
 ## ⭐️ Features
 - Queries the Sources Registry for the existence of a Source Item contract
