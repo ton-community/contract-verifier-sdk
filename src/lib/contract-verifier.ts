@@ -11,6 +11,7 @@ interface GetSourcesOptions {
 export declare type FuncCompilerVersion = string;
 export declare type TactVersion = string;
 export declare type FiftVersion = FuncCompilerVersion; // Fift is tied to a FunC version
+export declare type TolkVersion = string;
 
 export declare type FuncCompilerSettings = {
   funcVersion: FuncCompilerVersion;
@@ -24,22 +25,34 @@ export type TactCliCompileSettings = {
   tactVersion: TactVersion;
 };
 
+export type TolkCliCompileSettings = {
+  tolkVersion: TolkVersion;
+};
+
+
 export type FuncSource = {
   name: string;
   content: string;
   isEntrypoint: boolean;
 };
+export type TolkSource = {
+    name: string;
+    content: string;
+    isEntrypoint: boolean;
+}
+
 export type TactSource = {
   name: string;
   content: string;
 };
 
 export interface SourcesData {
-  files: (TactSource | FuncSource)[];
-  compiler: "func" | "tact" | "fift";
+  files: (TactSource | FuncSource | TolkSource)[];
+  compiler: "func" | "tact" | "fift" | "tolk";
   compilerSettings:
     | FuncCompilerSettings
     | FiftCliCompileSettings
+    | TolkCliCompileSettings
     | TactCliCompileSettings;
   verificationDate: Date;
   ipfsHttpLink: string;
