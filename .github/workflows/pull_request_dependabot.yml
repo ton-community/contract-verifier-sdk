@@ -1,11 +1,14 @@
 name: Build PR (Dependabot)
+on: pull_request
 
-on: pull_request_target
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-    if: ${{ github.actor == 'dependabot[bot]' }}
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == 'ton-community/contract-verifier-sdk'
     strategy:
       matrix:
         node-version: [12.x]
@@ -28,7 +31,7 @@ jobs:
         if: success()
         uses: "actions/github-script@v2"
         with:
-          github-token: "${{ secrets.GH_KEY }}"
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
           script: |
             const pullRequest = context.payload.pull_request
             const repository = context.repo
