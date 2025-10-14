@@ -79,7 +79,7 @@ function defaultIpfsConverter(ipfs: string, testnet: boolean) {
   if (testnet) {
     endpoint = "https://tonsource-testnet.infura-ipfs.io/ipfs/";
   } else {
-    endpoint = "https://files.orbs.network/ipfs/";
+    endpoint = "https://ipfs.toncenter.com/ipfs/";
   }
 
   return ipfs.replace("ipfs://", endpoint);
