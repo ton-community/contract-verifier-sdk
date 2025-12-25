@@ -73,14 +73,9 @@ function toSha256Buffer(s: string) {
   return Buffer.from(sha.digestSync());
 }
 
-function defaultIpfsConverter(ipfs: string, testnet: boolean) {
+function defaultIpfsConverter(ipfs: string) {
   let endpoint: string;
-
-  if (testnet) {
-    endpoint = "https://tonsource-testnet.infura-ipfs.io/ipfs/";
-  } else {
-    endpoint = "https://files.orbs.network/ipfs/";
-  }
+  endpoint = "https://gateway.pinata.cloud/ipfs/";
 
   return ipfs.replace("ipfs://", endpoint);
 }
@@ -107,7 +102,7 @@ export const ContractVerifier = {
 
     const args = new TupleBuilder();
     args.writeNumber(
-      bigIntFromBuffer(toSha256Buffer(options?.verifier ?? "orbs.com")),
+      bigIntFromBuffer(toSha256Buffer(options?.verifier ?? "verifier.ton.org")),
     );
     args.writeNumber(bigIntFromBuffer(Buffer.from(codeCellHash, "base64")));
     const { result: itemAddRes } = await tc.runMethod(
