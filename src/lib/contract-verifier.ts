@@ -3,7 +3,7 @@ import { getHttpV4Endpoint } from "@orbs-network/ton-access";
 import { Sha256 } from "@aws-crypto/sha256-js";
 
 interface GetSourcesOptions {
-  verifier?: string;
+  verifiers?: string[];
   httpApiEndpointV4?: string;
   testnet?: boolean;
 }
@@ -45,9 +45,16 @@ export type TactSource = {
   name: string;
   content: string;
 };
+export type MissingSource = {
+  name: string;
+  isEntrypoint: boolean;
+  error: string;
+}
+
+type SourceFile = TactSource | FuncSource | TolkSource | MissingSource;
 
 export interface SourcesData {
-  files: (TactSource | FuncSource | TolkSource)[];
+  files: SourceFile[];
   compiler: "func" | "tact" | "fift" | "tolk";
   compilerSettings:
     | FuncCompilerSettings
@@ -89,11 +96,43 @@ function bigIntFromBuffer(buffer: Buffer) {
   return BigInt(`0x${buffer.toString("hex")}`);
 }
 
+async function getSourceItemAddress(tc: TonClient4, seqno: number, sourceRegistryAddr: Address, codeCellHash: string, verifier: string) {
+  const args = new TupleBuilder();
+  args.writeNumber(
+    bigIntFromBuffer(toSha256Buffer(verifier)),
+  );
+  args.writeNumber(bigIntFromBuffer(Buffer.from(codeCellHash, "base64")));
+  const { result: itemAddRes } = await tc.runMethod(
+    seqno,
+    sourceRegistryAddr,
+    "get_source_item_address",
+    args.build(),
+  );
+  const reader = new TupleReader(itemAddRes);
+  const sourceItemAddr = reader.readAddress();
+  return sourceItemAddr;
+}
+
+async function getSourceItemData(tc: TonClient4, seqno: number, sourceItemAddr: Address) {
+  const { result: sourceItemDataRes } = await tc.runMethod(
+    seqno,
+    sourceItemAddr,
+    "get_source_item_data",
+  );
+
+  const reader = new TupleReader(sourceItemDataRes);
+  const contentCell = reader.skip(3).readCell().beginParse();
+  const version = contentCell.loadUint(8);
+  if (version !== 1) throw new Error("Unsupported version");
+  const ipfsLink = contentCell.loadStringTail();
+  return ipfsLink;
+}
+
 export const ContractVerifier = {
   async getSourcesJsonUrl(
     codeCellHash: string,
     options?: GetSourcesOptions,
-  ): Promise<string | null> {
+  ): Promise<Map<string, string | null>> {
     const tc = new TonClient4({
       endpoint:
         options?.httpApiEndpointV4 ??
@@ -104,39 +143,19 @@ export const ContractVerifier = {
     const {
       last: { seqno },
     } = await tc.getLastBlock();
+    const verifiers = options.verifiers ?? ["orbs.com", "verifier.ton.org"];
+    const sourceRegistryAddr = options.testnet ? SOURCES_REGISTRY_TESTNET : SOURCES_REGISTRY;
 
-    const args = new TupleBuilder();
-    args.writeNumber(
-      bigIntFromBuffer(toSha256Buffer(options?.verifier ?? "orbs.com")),
-    );
-    args.writeNumber(bigIntFromBuffer(Buffer.from(codeCellHash, "base64")));
-    const { result: itemAddRes } = await tc.runMethod(
-      seqno,
-      options.testnet ? SOURCES_REGISTRY_TESTNET : SOURCES_REGISTRY,
-      "get_source_item_address",
-      args.build(),
-    );
-
-    let reader = new TupleReader(itemAddRes);
-    const sourceItemAddr = reader.readAddress();
-    const isDeployed = await tc.isContractDeployed(seqno, sourceItemAddr);
-
-    if (isDeployed) {
-      const { result: sourceItemDataRes } = await tc.runMethod(
-        seqno,
-        sourceItemAddr,
-        "get_source_item_data",
-      );
-
-      reader = new TupleReader(sourceItemDataRes);
-      const contentCell = reader.skip(3).readCell().beginParse();
-      const version = contentCell.loadUint(8);
-      if (version !== 1) throw new Error("Unsupported version");
-      const ipfsLink = contentCell.loadStringTail();
-
-      return ipfsLink;
+    async function getSourceItemDataForVerifier(verifier: string): Promise<readonly [string, string | null]> {
+      const sourceItemAddr = await getSourceItemAddress(tc, seqno, sourceRegistryAddr, codeCellHash, verifier);
+      const isDeployed = await tc.isContractDeployed(seqno, sourceItemAddr);
+      if (isDeployed) {
+        return [verifier, await getSourceItemData(tc, seqno, sourceItemAddr)];
+      }
+      return [verifier, null];
     }
-    return null;
+
+    return new Map(await Promise.all(verifiers.map(getSourceItemDataForVerifier)));
   },
 
   async getSourcesData(
@@ -149,11 +168,13 @@ export const ContractVerifier = {
     const ipfsConverter = options.ipfsConverter ?? defaultIpfsConverter;
     const ipfsHttpLink = ipfsConverter(sourcesJsonUrl, !!options.testnet);
 
-    const verifiedContract = await (
-      await fetch(ipfsConverter(sourcesJsonUrl, !!options.testnet))
-    ).json();
+    const response = await fetch(ipfsConverter(sourcesJsonUrl, !!options.testnet));
+    if (response.status >= 400) {
+      throw new Error(await response.text());
+    }
+    const verifiedContract = await response.json();
 
-    const files = (
+    const files: SourceFile[] = (
       await Promise.all(
         verifiedContract.sources.map(
           async (source: {
@@ -162,11 +183,19 @@ export const ContractVerifier = {
             isEntrypoint?: boolean;
           }) => {
             const url = ipfsConverter(source.url, !!options.testnet);
-            const content = await fetch(url).then((u) => u.text());
+            const resp = await fetch(url);
+            if (resp.status >= 400) {
+              return {
+                name: source.filename,
+                isEntrypoint: source.isEntrypoint,
+                error: await resp.text(),
+              }
+            }
+            const content = await resp.text();
             return {
               name: source.filename,
-              content,
               isEntrypoint: source.isEntrypoint,
+              content,
             };
           },
         ),
