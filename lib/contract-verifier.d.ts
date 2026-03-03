@@ -1,7 +1,8 @@
+import { TonClient4 } from "@ton/ton";
 interface GetSourcesOptions {
-    verifier?: string;
-    httpApiEndpointV4?: string;
+    verifiers?: string[];
     testnet?: boolean;
+    tonClient?: TonClient4;
 }
 export declare type FuncCompilerVersion = string;
 export declare type TactVersion = string;
@@ -35,8 +36,14 @@ export type TactSource = {
     name: string;
     content: string;
 };
+export type MissingSource = {
+    name: string;
+    isEntrypoint: boolean;
+    error: string;
+};
+type SourceFile = TactSource | FuncSource | TolkSource | MissingSource;
 export interface SourcesData {
-    files: (TactSource | FuncSource | TolkSource)[];
+    files: SourceFile[];
     compiler: "func" | "tact" | "fift" | "tolk";
     compilerSettings: FuncCompilerSettings | FiftCliCompileSettings | TolkCliCompileSettings | TactCliCompileSettings;
     verificationDate: Date;
@@ -44,7 +51,7 @@ export interface SourcesData {
 }
 type IpfsUrlConverterFunc = (ipfsUrl: string, testnet: boolean) => string;
 export declare const ContractVerifier: {
-    getSourcesJsonUrl(codeCellHash: string, options?: GetSourcesOptions): Promise<string | null>;
+    getSourcesJsonUrl(codeCellHash: string, options?: GetSourcesOptions): Promise<Map<string, string | null>>;
     getSourcesData(sourcesJsonUrl: string, options?: {
         ipfsConverter?: IpfsUrlConverterFunc;
         testnet?: boolean;
