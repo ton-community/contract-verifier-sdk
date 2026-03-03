@@ -1,11 +1,11 @@
-import { TonClient4, Address, TupleReader, TupleBuilder } from "ton";
-import { getHttpV4Endpoint } from "@orbs-network/ton-access";
+import { TonClient4, TonClient } from "@ton/ton";
+import { Address, TupleReader, TupleBuilder } from "@ton/core";
 import { Sha256 } from "@aws-crypto/sha256-js";
 
 interface GetSourcesOptions {
   verifiers?: string[];
-  httpApiEndpointV4?: string;
   testnet?: boolean;
+  tonClient?: TonClient4;
 }
 
 export declare type FuncCompilerVersion = string;
@@ -128,18 +128,21 @@ async function getSourceItemData(tc: TonClient4, seqno: number, sourceItemAddr: 
   return ipfsLink;
 }
 
+function getDefaultClient(isTestnet: boolean) {
+  return new TonClient4({
+    endpoint:
+      (isTestnet
+        ? "https://testnet.toncenter.com/api/v2/jsonRPC"
+        : "https://toncenter.com/api/v2/jsonRPC"),
+  });
+}
+
 export const ContractVerifier = {
   async getSourcesJsonUrl(
     codeCellHash: string,
     options?: GetSourcesOptions,
   ): Promise<Map<string, string | null>> {
-    const tc = new TonClient4({
-      endpoint:
-        options?.httpApiEndpointV4 ??
-        (await getHttpV4Endpoint({
-          network: options.testnet ? "testnet" : "mainnet",
-        })),
-    });
+    const tc = options?.tonClient ?? getDefaultClient(options.testnet ?? false);
     const {
       last: { seqno },
     } = await tc.getLastBlock();
